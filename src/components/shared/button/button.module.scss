@@ -1,0 +1,7 @@
+@use "src/styles/utilities/_variables" as vr;
+
+.button {
+  width: 150px;
+  padding: vr.$spacingSize10 vr.$spacingSize30;
+  background: var(--colorButtonPrimary);
+}

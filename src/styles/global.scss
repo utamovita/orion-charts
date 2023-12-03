@@ -1,0 +1,26 @@
+@import "./reset";
+@import "./fonts";
+
+:root {
+
+  --fontFamilyPrimary: "Gotham", sans-serif;
+
+  --colorWhite: #f6f7f9;
+  --colorBlack: #000;
+
+  --colorPrimary: #4848ac;
+  --colorPrimaryLight: #7475d4;
+  --colorPrimaryDark: #303096;
+
+  --colorSecondary: #fe782f;
+  --colorSecondaryLight: #ff990c;
+  
+  --colorText: #505050;
+  --colorBackgroundPrimary: #f9f9f9;
+}
+body {
+  font-family: var(--fontFamilyPrimary);
+  background-color: var(--colorBackgroundPrimary);
+  color: var(--colorText);
+}
+

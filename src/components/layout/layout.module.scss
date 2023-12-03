@@ -1,0 +1,7 @@
+@use "src/styles/utilities/_variables" as vr;
+
+.container {
+  max-width: 1200px;
+  padding: vr.$spacingSize40;
+  margin: 0 auto;
+}

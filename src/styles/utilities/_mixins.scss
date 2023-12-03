@@ -1,0 +1,25 @@
+@use "src/shared/design-system/styles/utilities/_variables" as vr;
+
+@mixin devices($size) {
+  @if $size == mobile {
+    @media (max-width: vr.$breakpointMobile - 1) {
+      @content;
+    }
+  } @else if $size == mobile-up {
+    @media (min-width: vr.$breakpointMobile) {
+      @content;
+    }
+  } @else if $size == tablet {
+    @media (max-width: vr.$breakpointDesktop - 1) {
+      @content;
+    }
+  } @else if $size == tablet-only {
+    @media (min-width: vr.$breakpointMobile) and (max-width: vr.$breakpointDesktop - 1) {
+      @content;
+    }
+  } @else if $size == desktop {
+    @media (min-width: vr.$breakpointDesktop) {
+      @content;
+    }
+  }
+}

@@ -1,0 +1,21 @@
+$GothamBookWOFF: url("../../public/fonts/gotham/Gotham-Book.woff") format("woff");
+$GothamBookTTF: url("../../public/fonts/gotham/Gotham-Book.ttf") format("truetype");
+$GothamBookEOT: url("../../public/fonts/gotham/Gotham-Book.eot") format("eot");
+
+$GothamBoldWOFF: url("../../public/fonts/gotham/Gotham-Bold.woff") format("woff");
+$GothamBoldTTF: url("../../public/fonts/gotham/Gotham-Bold.ttf") format("truetype");
+$GothamBoldEOT: url("../../public/fonts/gotham/Gotham-Bold.eot") format("eot");
+
+@font-face {
+  font-family: Gotham;
+  src: local("Gotham Book"), local("GothamBook"), $GothamBookWOFF, $GothamBookTTF, $GothamBookEOT;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: Gotham;
+  src: local("Gotham Bold"), local("GothamBold"), $GothamBoldWOFF, $GothamBoldTTF, $GothamBoldEOT;
+  font-weight: 700;
+  font-style: normal;
+}
