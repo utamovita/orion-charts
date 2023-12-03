@@ -1,0 +1,40 @@
+@use "src/styles/utilities/_variables" as vr;
+
+.section {
+  margin-top: vr.$spacingSize50;
+}
+.sectionTitle {
+  font-size: 42px;
+  text-align: center;
+}
+
+.totalCallsWrapper {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  justify-content: center;
+  padding: 50px;
+}
+
+.totalCallsColor {
+  display: flex;
+  width: 25px;
+  height: 25px;
+  margin-right: vr.$spacingSize20;
+  font-size: 18px;
+  margin-bottom: vr.$spacingSize20;
+}
+
+.doughnutWrapper {
+  max-width: 500px;
+}
+
+.element {
+  display: flex;
+  align-items: center;
+}
+
+.elementAmount {
+  font-weight: bold;
+  margin-left: vr.$spacingSize20;
+}

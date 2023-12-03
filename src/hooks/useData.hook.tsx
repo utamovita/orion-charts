@@ -1,3 +1,6 @@
+import { useDataDispatch } from "../context/data.context";
+import { RecordType } from "../types/DataTypes.type";
+
 const dataIndexes = {
   skypeName: 0,
   fullName: 1,
@@ -9,12 +12,43 @@ const dataIndexes = {
   type: 7,
   pricePerMinute: 8,
   callLength: 9,
-  price: 10,
+  total: 10,
 };
 
 function useData() {
+  const dispatchData = useDataDispatch();
+
   const handleData = (data: string[][]) => {
-    const dataValues = data.splice(1);
+    const transformedData: RecordType[] = [];
+
+    data.slice(1).map((row) => {
+      if (!row[dataIndexes.fullName]) return null;
+
+      const record = {
+        date: row[dataIndexes.date],
+        phone: row[dataIndexes.phone],
+        country: row[dataIndexes.country],
+        pricePerMinute: row[dataIndexes.pricePerMinute],
+        callLength: row[dataIndexes.callLength],
+        total: row[dataIndexes.total],
+      };
+
+      if (
+        transformedData.some((item) => item.name === row[dataIndexes.fullName])
+      ) {
+        const index = transformedData.findIndex(
+          (item) => item.name === row[dataIndexes.fullName]
+        );
+        transformedData[index].data.push(record);
+      } else {
+        transformedData.push({
+          name: row[dataIndexes.fullName],
+          data: [record],
+        });
+      }
+    });
+
+    dispatchData({ type: "ADD_DATA", data: transformedData });
   };
 
   const validateData = (data: string[][]): null | string => {
@@ -52,12 +86,13 @@ function useData() {
     if (dataHeader[dataIndexes.callLength] !== "Czas trwania") {
       error = "Zły układ kolumny: Czas trwania";
     }
-    if (dataHeader[dataIndexes.price] !== "Kwota") {
+    if (dataHeader[dataIndexes.total] !== "Kwota") {
       error = "Zły układ kolumny: Kwota";
     }
 
     return error;
   };
+
   return { handleData, validateData };
 }
 

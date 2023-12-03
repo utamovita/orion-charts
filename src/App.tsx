@@ -1,15 +1,36 @@
 import "./styles/global.scss";
 
-import FileDisplayer from "./components/file-displayer/file-displayer.component";
 import { FileUploader } from "./components/file-uploader/file-uploader.component";
 import { Layout } from "./components/layout/layout.component";
+import { DataProvider } from "./context/data.context";
+import { Charts } from "./components/charts/charts.component";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Tooltip,
+  Legend,
+  ArcElement,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement,
+  Tooltip,
+  Legend
+);
 
 function App() {
   return (
-    <Layout>
-      <FileUploader />
-      <FileDisplayer />
-    </Layout>
+    <DataProvider>
+      <Layout>
+        <FileUploader />
+        <Charts />
+      </Layout>
+    </DataProvider>
   );
 }
 

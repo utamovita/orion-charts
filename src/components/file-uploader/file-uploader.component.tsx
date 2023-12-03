@@ -22,7 +22,6 @@ const FileUploader = () => {
     e: React.ChangeEvent<HTMLInputElement> | null,
     file?: any
   ) => {
-
     if (e !== null || file) {
       try {
         let currentFile = null;
@@ -33,7 +32,6 @@ const FileUploader = () => {
           currentFile = e!.target.files![0];
         }
 
-        console.log(currentFile);
         const fileUrl = URL.createObjectURL(currentFile);
         const response = await fetch(fileUrl);
         const text = await response.text();

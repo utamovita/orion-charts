@@ -2,6 +2,9 @@
 
 .error {
   color: var(--colorTextError);
+  text-align: center;
+  margin-top: vr.$spacingSize50;
+  font-size: 18px;
 }
 
 .input {
@@ -49,7 +52,7 @@
 }
 
 .dropContainer:hover {
-  background: #eee;
+  background: #dedcdc;
   border-color: #111;
 }
 
@@ -58,7 +61,7 @@
 }
 
 .dragActive {
-  background: #eee;
+  background: #dedcdc;
   border-color: #111;
 
   .dropTitle {
