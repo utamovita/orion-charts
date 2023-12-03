@@ -1,6 +1,6 @@
 import { useDataState } from "../../context/data.context";
 import { CallsAmount } from "./calls-amount/calls-amount.component";
-import { TotalCallsSection } from "./total-calls/total-amount.component";
+import { TotalCallsSection } from "./total-calls/total-calls.component";
 import styles from "./charts.module.scss";
 
 type SectionProps = {
