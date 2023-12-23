@@ -1,5 +1,5 @@
 type DataType = {
-  date: string;
+  date: Date;
   phone: string;
   country: string;
   pricePerMinute: string;

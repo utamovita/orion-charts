@@ -2,6 +2,10 @@
 
 .button {
   width: 150px;
-  padding: vr.$spacingSize10 vr.$spacingSize30;
-  background: var(--colorButtonPrimary);
+  max-width: 100%;
+  color: var(--colorBackgroundPrimary);
+  padding: 5px;
+  background-color: var(--backgroundPrimary);
+  border-radius: 10px;
+  border: none;
 }

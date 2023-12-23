@@ -12,6 +12,8 @@ import {
   Tooltip,
   Legend,
   ArcElement,
+  PointElement,
+  LineElement,
 } from "chart.js";
 
 ChartJS.register(
@@ -20,7 +22,9 @@ ChartJS.register(
   BarElement,
   ArcElement,
   Tooltip,
-  Legend
+  Legend,
+  PointElement,
+  LineElement
 );
 
 function App() {

@@ -23,7 +23,6 @@ const chartOptions = {
 function useChart() {
   const state = useDataState();
 
-  console.log(state.data);
   return { chartColors, chartOptions };
 }
 

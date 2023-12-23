@@ -1,26 +1,23 @@
 import { Bar } from "react-chartjs-2";
 import { useChart } from "../../../hooks/useChart.hook";
 
-const CallsAmount = () => {
+const Sample2 = () => {
   const { chartColors, chartOptions } = useChart();
-  const chartLlabels = [
-    "10:00",
-    "11:00",
-    "12:00",
-    "13:00",
-    "14:00",
-    "15:00",
-    "16:00",
-    "17:00",
-    "18:00",
+  const chartLabels = [
+    "DE",
+    "AT",
+    "NL",
+    "SWE",
+    "BE",
+    "US",
   ];
 
   const chartData = {
-    labels: chartLlabels,
+    labels: chartLabels,
     datasets: [
       {
-        label: "Filip Marcinkowski",
-        data: [55, 49, 80, 71, 56, 75, 40, 65, 32],
+        label: "Kraj",
+        data: [315, 289, 260, 131, 76, 30],
         backgroundColor: chartColors[0],
       },
     ],
@@ -29,4 +26,4 @@ const CallsAmount = () => {
   return <Bar options={chartOptions} data={chartData} />;
 };
 
-export { CallsAmount };
+export { Sample2 };

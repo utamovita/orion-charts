@@ -25,7 +25,7 @@ function useData() {
       if (!row[dataIndexes.fullName]) return null;
 
       const record = {
-        date: row[dataIndexes.date],
+        date: new Date(row[dataIndexes.date]),
         phone: row[dataIndexes.phone],
         country: row[dataIndexes.country],
         pricePerMinute: row[dataIndexes.pricePerMinute],
