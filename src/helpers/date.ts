@@ -1,4 +1,5 @@
 function formatDate(date: Date): string {
+  console.log("Xd", date);
   const d = new Date(date);
 
   let day = "" + d.getDate();
@@ -11,13 +12,13 @@ function formatDate(date: Date): string {
   return [day, month, year].join("-");
 }
 
-const getDateRange = (dates: Date[]): { min: string; max: string } => {
+const getDateRange = (dates: Date[]): { min: Date; max: Date } => {
   //@ts-ignore
   const min = new Date(Math.min(...dates));
   //@ts-ignore
   const max = new Date(Math.max(...dates));
 
-  return { min: formatDate(min), max: formatDate(max)};
+  return { min, max };
 };
 
 export { formatDate, getDateRange };

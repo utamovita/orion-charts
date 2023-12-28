@@ -3,9 +3,11 @@
 .button {
   width: 150px;
   max-width: 100%;
-  color: var(--colorBackgroundPrimary);
+  color: var(--colorWhite);
   padding: 5px;
-  background-color: var(--backgroundPrimary);
+  background-color: var(--colorSecondary);
   border-radius: 10px;
   border: none;
+  text-transform: uppercase;
+  font-weight: bold;
 }

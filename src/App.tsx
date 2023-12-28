@@ -15,6 +15,10 @@ import {
   PointElement,
   LineElement,
 } from "chart.js";
+import { CustomDateRangePicker } from "./components/shared/date-range-picker/date-range-picker.component";
+import { Modal } from "./components/shared/modal/modal.component";
+import { Suspense } from "react";
+import { ModalProvider } from "./context/modal.context";
 
 ChartJS.register(
   CategoryScale,
@@ -30,10 +34,15 @@ ChartJS.register(
 function App() {
   return (
     <DataProvider>
-      <Layout>
-        <FileUploader />
-        <Charts />
-      </Layout>
+      <ModalProvider>
+        <Layout>
+          <Suspense fallback={null}>
+            <Modal />
+          </Suspense>
+          <FileUploader />
+          <Charts />
+        </Layout>
+      </ModalProvider>
     </DataProvider>
   );
 }

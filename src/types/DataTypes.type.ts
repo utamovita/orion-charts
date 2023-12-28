@@ -12,4 +12,6 @@ type RecordType = {
   data: DataType[];
 };
 
-export type { RecordType, DataType };
+type SegmentType = "totalCalls";
+
+export type { RecordType, DataType, SegmentType };

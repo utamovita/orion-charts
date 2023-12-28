@@ -23,7 +23,7 @@ const Section = ({ title, children }: SectionProps) => {
 const Charts = () => {
   const state = useDataState();
 
-  if (state.data.length === 0) {
+  if (state.globalData.length === 0) {
     return null;
   }
 

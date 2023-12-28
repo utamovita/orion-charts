@@ -48,7 +48,7 @@ function useData() {
       }
     });
 
-    dispatchData({ type: "ADD_DATA", data: transformedData });
+    dispatchData({ type: "ADD_GLOBAL_DATA", data: transformedData });
   };
 
   const validateData = (data: string[][]): null | string => {

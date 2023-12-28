@@ -1,64 +1,51 @@
-import { useDataState } from "src/context/data.context";
 import styles from "./total-calls.module.scss";
 import { Doughnut } from "react-chartjs-2";
-import { useChart } from "src/hooks/useChart.hook";
-import { getDateRange } from "src/helpers/date";
-
-const chartOptions = {
-  plugins: {
-    legend: {
-      display: false,
-    },
-  },
-} as const;
+import { CustomDateRangePicker } from "src/components/shared/date-range-picker/date-range-picker.component";
+import { useCallback } from "react";
+import { useModalDispatch } from "src/context/modal.context";
+import { Calendar as CalendarIcon } from "@carbon/icons-react";
+import { useTotalCalls } from "./use-total-calls.hook";
+import { formatDate } from "src/helpers/date";
+import { useDataState } from "src/context/data.context";
 
 const TotalCallsSection = () => {
+  const modalDispatch = useModalDispatch();
+  const { chartOptions, chartColors, chartData, data } = useTotalCalls();
   const state = useDataState();
-  const { chartColors } = useChart();
 
-  const sortedData = state.data.sort((a, b) => b.data.length - a.data.length);
-  const labels = sortedData.map((item) => item.name);
-  const datasets = sortedData.map((item) => item.data.length);
+  const { dateFrom, dateTo } = state.segmentData.totalCalls;
+  const showDataRangePopup = useCallback(() => {
+    const content = (
+      <CustomDateRangePicker min={dateFrom} segment="totalCalls" />
+    );
 
-  const sumDates = () => {
-    let allDates: Date[] = [];
+    modalDispatch({ type: "SHOW", payload: { content } });
+  }, [modalDispatch]);
 
-    state.data.forEach((item) => {
-      item.data.forEach((item) => {
-        allDates.push(item.date);
-      });
-    });
-
-    return allDates;
-  };
-
-  const allDates = sumDates();
-  const { min, max } = getDateRange(allDates);
-
-  const data = {
-    labels,
-    datasets: [
-      {
-        data: datasets,
-        backgroundColor: chartColors,
-      },
-    ],
-  };
 
   return (
     <>
-      {
-        <h3 className={styles.subtitle}>
-          Od {min} do {max}
-        </h3>
-      }
+      <div className={styles.header}>
+        <div>
+          <h3 className={styles.subtitle}>
+            Wybrany zakres: <br />
+            od {formatDate(dateFrom)} <br />
+            do {formatDate(dateTo)}
+          </h3>
+        </div>
+
+        <button className={styles.dateRangeButton} onClick={showDataRangePopup}>
+          Zmień zakres <CalendarIcon size={24} className={styles.icon} />
+        </button>
+      </div>
+
       <div className={styles.totalCallsWrapper}>
         <div className={styles.doughnutWrapper}>
-          <Doughnut data={data} options={chartOptions} />
+          <Doughnut data={chartData} options={chartOptions} />
         </div>
 
         <ul className={styles.totalCalls}>
-          {state.data.map((item, index) => (
+          {data.map((item, index) => (
             <li key={item.name} className={styles.element}>
               <span
                 className={styles.totalCallsColor}

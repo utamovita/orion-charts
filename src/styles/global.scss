@@ -5,6 +5,8 @@
 
   --fontFamilyPrimary: "Gotham", sans-serif;
 
+  --scrollbar-width: 15px;
+
   --colorWhite: #f6f7f9;
   --colorBlack: #000;
 
@@ -20,6 +22,7 @@
   --colorTextError: #ff0000;
   --colorBackgroundPrimary: #f9f9f9;
 }
+
 body {
   font-family: var(--fontFamilyPrimary);
   background-color: var(--colorBackgroundPrimary);
