@@ -1,5 +1,4 @@
 function formatDate(date: Date): string {
-  console.log("Xd", date);
   const d = new Date(date);
 
   let day = "" + d.getDate();

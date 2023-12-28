@@ -3,17 +3,24 @@ import { Doughnut } from "react-chartjs-2";
 import { CustomDateRangePicker } from "src/components/shared/date-range-picker/date-range-picker.component";
 import { useCallback } from "react";
 import { useModalDispatch } from "src/context/modal.context";
-import { Calendar as CalendarIcon } from "@carbon/icons-react";
+import {
+  Calendar as CalendarIcon,
+  SortDescending as SortDescIcon,
+  SortAscending as SortAscIcon,
+} from "@carbon/icons-react";
 import { useTotalCalls } from "./use-total-calls.hook";
 import { formatDate } from "src/helpers/date";
-import { useDataState } from "src/context/data.context";
+import { useDataDispatch, useDataState } from "src/context/data.context";
+import { useData } from "src/hooks/useData.hook";
+import cx from "classnames";
 
 const TotalCallsSection = () => {
   const modalDispatch = useModalDispatch();
+  const dataDispatch = useDataDispatch();
   const { chartOptions, chartColors, chartData, data } = useTotalCalls();
   const state = useDataState();
+  const { dateFrom, dateTo, sort } = state.segmentData.totalCalls;
 
-  const { dateFrom, dateTo } = state.segmentData.totalCalls;
   const showDataRangePopup = useCallback(() => {
     const content = (
       <CustomDateRangePicker min={dateFrom} segment="totalCalls" />
@@ -21,7 +28,6 @@ const TotalCallsSection = () => {
 
     modalDispatch({ type: "SHOW", payload: { content } });
   }, [modalDispatch]);
-
 
   return (
     <>
@@ -34,9 +40,25 @@ const TotalCallsSection = () => {
           </h3>
         </div>
 
-        <button className={styles.dateRangeButton} onClick={showDataRangePopup}>
-          Zmień zakres <CalendarIcon size={24} className={styles.icon} />
-        </button>
+        <div className={styles.actionBar}>
+          <button
+            className={styles.dateRangeButton}
+            onClick={showDataRangePopup}
+          >
+            Zmień zakres <CalendarIcon size={24} className={styles.icon} />
+          </button>
+          <button
+            className={cx(styles.dateRangeButton)}
+            onClick={() => dataDispatch({ type: "UPDATE_SORTING", segment: "totalCalls" })}
+          >
+            Sortuj {sort === "desc" ? "malejąco" : "rosnąco"}
+            {sort === "desc" ? (
+              <SortDescIcon size={24} className={styles.icon} />
+            ) : (
+              <SortAscIcon size={24} className={styles.icon} />
+            )}
+          </button>
+        </div>
       </div>
 
       <div className={styles.totalCallsWrapper}>

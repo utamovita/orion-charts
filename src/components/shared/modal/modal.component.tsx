@@ -38,7 +38,6 @@ export const Modal = React.memo(() => {
             className={styles.closeButton}
             onClick={handleCloseModal}
           />
-
           {content}
         </div>
       </div>

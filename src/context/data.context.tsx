@@ -12,6 +12,7 @@ type State = {
       selectedDateTo: Date;
       dateFrom: Date;
       dateTo: Date;
+      sort: "asc" | "desc";
     };
   };
 };
@@ -31,6 +32,10 @@ type Action =
       type: "UPDATE_SELECTED_DATE_RANGE";
       dateFrom: Date;
       dateTo: Date;
+      segment: SegmentType;
+    }
+  | {
+      type: "UPDATE_SORTING";
       segment: SegmentType;
     };
 
@@ -62,12 +67,12 @@ function reducer(state: State, action: Action): State {
       const { min, max } = getDateRange(allDates);
 
       const updatedSegmentData = {
-        ...state.segmentData,
         totalCalls: {
           selectedDateFrom: min,
           selectedDateTo: max,
           dateFrom: min,
           dateTo: max,
+          sort: "desc" as const,
         },
       };
 
@@ -105,6 +110,21 @@ function reducer(state: State, action: Action): State {
         },
       };
 
+    case "UPDATE_SORTING":
+      const sort =
+        state.segmentData[action.segment].sort === "asc" ? "desc" : "asc";
+
+      return {
+        ...state,
+        segmentData: {
+          ...state.segmentData,
+          [action.segment]: {
+            ...state.segmentData[action.segment],
+            sort,
+          },
+        },
+      };
+
     default:
       throw new Error();
   }
@@ -125,6 +145,7 @@ const DataProvider = ({ children }: DataProviderProps) => {
         selectedDateTo: new Date(),
         dateFrom: new Date(),
         dateTo: new Date(),
+        sort: "desc",
       },
     },
   };

@@ -12,7 +12,7 @@ const chartOptions = {
 export function useTotalCalls() {
   const state = useDataState();
   const { chartColors } = useChart();
-  const { dateFrom, dateTo } = state.segmentData.totalCalls;
+  const { dateFrom, dateTo, sort } = state.segmentData.totalCalls;
 
   const filteredData = state.globalData.map((item) => ({
     name: item.name,
@@ -23,6 +23,8 @@ export function useTotalCalls() {
 
   const labels = filteredData.map((item) => item.name);
   const datasets = filteredData.map((item) => item.data.length);
+
+  //TODO: hook should return new array for list of total calls with name next to it (sorted)
 
   const chartData = {
     labels,
