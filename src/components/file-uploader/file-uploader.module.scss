@@ -1,5 +1,13 @@
 @use "src/styles/utilities/_variables" as vr;
 
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(100vh - 40px);
+}
+
 .error {
   color: var(--colorTextError);
   text-align: center;
@@ -35,7 +43,6 @@
 }
 
 .dropContainer {
-  margin-top: vr.$spacingSize80;
   position: relative;
   display: flex;
   gap: 10px;
@@ -44,6 +51,8 @@
   align-items: center;
   height: 200px;
   padding: 20px;
+  width: 100%;
+  max-width: 80%;
   border-radius: 10px;
   border: 2px dashed #555;
   color: #444;

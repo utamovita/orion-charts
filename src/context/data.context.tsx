@@ -1,18 +1,19 @@
 import React, { useContext, useReducer } from "react";
-import { RecordType, SegmentType } from "../types/DataTypes.type";
+import { RecordType, SegmentType, SortType } from "../types/DataTypes.type";
 import { getDateRange } from "src/helpers/date";
 
 type State = {
   globalMinDate: Date;
   globalMaxDate: Date;
   globalData: RecordType[];
+  sort: SortType;
+  filterSelection: string[];
   segmentData: {
     [key in SegmentType]: {
       selectedDateFrom: Date;
       selectedDateTo: Date;
       dateFrom: Date;
       dateTo: Date;
-      sort: "asc" | "desc";
     };
   };
 };
@@ -36,7 +37,12 @@ type Action =
     }
   | {
       type: "UPDATE_SORTING";
-      segment: SegmentType;
+      sort: SortType;
+    }
+  | {
+      type: "UPDATE_FILTER_SELECTION";
+      checked: boolean;
+      name: string;
     };
 
 type Dispatch = (action: Action) => void;
@@ -44,6 +50,7 @@ type Dispatch = (action: Action) => void;
 export const DataStateContext = React.createContext<State | undefined>(
   undefined
 );
+
 export const DataDispatchContext = React.createContext<Dispatch | undefined>(
   undefined
 );
@@ -72,11 +79,11 @@ function reducer(state: State, action: Action): State {
           selectedDateTo: max,
           dateFrom: min,
           dateTo: max,
-          sort: "desc" as const,
         },
       };
 
       return {
+        ...state,
         segmentData: updatedSegmentData,
         globalData: action.data,
         globalMinDate: min,
@@ -111,19 +118,27 @@ function reducer(state: State, action: Action): State {
       };
 
     case "UPDATE_SORTING":
-      const sort =
-        state.segmentData[action.segment].sort === "asc" ? "desc" : "asc";
-
       return {
         ...state,
-        segmentData: {
-          ...state.segmentData,
-          [action.segment]: {
-            ...state.segmentData[action.segment],
-            sort,
-          },
-        },
+        sort: action.sort,
       };
+
+    case "UPDATE_FILTER_SELECTION":
+      if (!action.checked) {
+        return {
+          ...state,
+          filterSelection: state.filterSelection.filter(
+            (item) => item !== action.name
+          ),
+        };
+      }
+
+      if (action.checked) {
+        return {
+          ...state,
+          filterSelection: [...state.filterSelection, action.name],
+        };
+      }
 
     default:
       throw new Error();
@@ -139,13 +154,14 @@ const DataProvider = ({ children }: DataProviderProps) => {
     globalData: [],
     globalMinDate: new Date(),
     globalMaxDate: new Date(),
+    sort: "desc",
+    filterSelection: [],
     segmentData: {
       totalCalls: {
         selectedDateFrom: new Date(),
         selectedDateTo: new Date(),
         dateFrom: new Date(),
         dateTo: new Date(),
-        sort: "desc",
       },
     },
   };

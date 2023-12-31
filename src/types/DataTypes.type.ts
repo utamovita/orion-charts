@@ -14,4 +14,6 @@ type RecordType = {
 
 type SegmentType = "totalCalls";
 
-export type { RecordType, DataType, SegmentType };
+type SortType = "desc" | "asc" | "alpha";
+
+export type { RecordType, DataType, SegmentType, SortType };

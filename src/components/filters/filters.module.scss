@@ -1,0 +1,53 @@
+@use "src/styles/utilities/_variables" as vr;
+
+.filterButton {
+  position: fixed;
+  left: vr.$spacingSize70;
+  bottom: vr.$spacingSize70;
+  background: var(--colorPrimary);
+  border-radius: 50%;
+  box-shadow: var(--boxShadow);
+  margin-left: 0;
+  margin-bottom: 0;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: var(--colorPrimaryHover);
+  }
+}
+
+.filterButtonIcon {
+  width: 28px;
+  height: 28px;
+  color: var(--colorWhite);
+}
+
+.contentWrapper {
+  display:flex;
+  flex-direction: column;
+  align-self: start;
+  justify-content: start;
+  min-width: 300px;
+  gap: vr.$spacingSize60;
+}
+
+.contentTitle {
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: vr.$spacingSize30;
+  margin-bottom: vr.$spacingSize30;
+}
+
+.namesWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: vr.$spacingSize10;
+  max-height: 400px;
+  overflow-y: scroll;
+}

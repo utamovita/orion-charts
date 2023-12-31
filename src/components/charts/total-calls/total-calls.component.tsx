@@ -3,23 +3,16 @@ import { Doughnut } from "react-chartjs-2";
 import { CustomDateRangePicker } from "src/components/shared/date-range-picker/date-range-picker.component";
 import { useCallback } from "react";
 import { useModalDispatch } from "src/context/modal.context";
-import {
-  Calendar as CalendarIcon,
-  SortDescending as SortDescIcon,
-  SortAscending as SortAscIcon,
-} from "@carbon/icons-react";
+import { Calendar as CalendarIcon } from "@carbon/icons-react";
 import { useTotalCalls } from "./use-total-calls.hook";
 import { formatDate } from "src/helpers/date";
-import { useDataDispatch, useDataState } from "src/context/data.context";
-import { useData } from "src/hooks/useData.hook";
-import cx from "classnames";
+import { useDataState } from "src/context/data.context";
 
 const TotalCallsSection = () => {
   const modalDispatch = useModalDispatch();
-  const dataDispatch = useDataDispatch();
-  const { chartOptions, chartColors, chartData, data } = useTotalCalls();
+  const { chartOptions, chartColors, chartData, listData } = useTotalCalls();
   const state = useDataState();
-  const { dateFrom, dateTo, sort } = state.segmentData.totalCalls;
+  const { dateFrom, dateTo } = state.segmentData.totalCalls;
 
   const showDataRangePopup = useCallback(() => {
     const content = (
@@ -28,6 +21,14 @@ const TotalCallsSection = () => {
 
     modalDispatch({ type: "SHOW", payload: { content } });
   }, [modalDispatch]);
+
+  if (listData.length === 0) {
+    return (
+      <div className={styles.noData}>
+        <h3 className={styles.subtitle}>Brak danych do wyświetlenia</h3>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -47,17 +48,6 @@ const TotalCallsSection = () => {
           >
             Zmień zakres <CalendarIcon size={24} className={styles.icon} />
           </button>
-          <button
-            className={cx(styles.dateRangeButton)}
-            onClick={() => dataDispatch({ type: "UPDATE_SORTING", segment: "totalCalls" })}
-          >
-            Sortuj {sort === "desc" ? "malejąco" : "rosnąco"}
-            {sort === "desc" ? (
-              <SortDescIcon size={24} className={styles.icon} />
-            ) : (
-              <SortAscIcon size={24} className={styles.icon} />
-            )}
-          </button>
         </div>
       </div>
 
@@ -67,14 +57,14 @@ const TotalCallsSection = () => {
         </div>
 
         <ul className={styles.totalCalls}>
-          {data.map((item, index) => (
-            <li key={item.name} className={styles.element}>
+          {listData.map(({ name, amount }, index) => (
+            <li key={name} className={styles.element}>
               <span
                 className={styles.totalCallsColor}
                 style={{ backgroundColor: chartColors[index] }}
               ></span>
-              <span>{item.name} </span>
-              <span className={styles.elementAmount}>{item.data.length}</span>
+              <span>{name} </span>
+              <span className={styles.elementAmount}>{amount}</span>
             </li>
           ))}
         </ul>

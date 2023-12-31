@@ -13,3 +13,26 @@
   font-size: 42px;
   text-align: center;
 }
+
+
+.actionBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: vr.$spacingSize60 vr.$spacingSize30;
+}
+.sortButton {
+  font-weight: bold;
+  display: flex;
+  font-family: var(--fontFamilyPrimary);
+  font-size: 18px;
+  color: var(--colorTextGray);
+  align-items: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  .icon {
+    margin-left: vr.$spacingSize10;
+  }
+}

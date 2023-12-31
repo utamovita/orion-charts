@@ -1,0 +1,150 @@
+.groupLabelWrapper {
+  margin-bottom: 17.5px;
+  width: max-content;
+}
+
+.groupLabel {
+  color: var(--colorTextGray);
+  font-size:14px;
+  line-height: 21px;
+}
+
+.groupLabelLarge {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.groupItemLabelLarge {
+  & span {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+.groupItem {
+  display: grid;
+  grid-template-columns: 20px 1fr auto;
+  grid-template-rows: 1fr;
+  grid-column-gap: 0;
+  grid-row-gap: 0;
+  cursor: pointer;
+}
+
+.groupItemsVertical {
+  gap: 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+.groupItemsHorizontal {
+  gap: 25.5px;
+  display: flex;
+  flex-direction: row;
+}
+
+@media only screen and (max-width: 700px) {
+  .groupItemsHorizontal {
+    gap: 19px;
+    flex-direction: column;
+  }
+}
+
+.groupItemDot {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  height: 100%;
+  width: 20px;
+  min-width: 20px;
+}
+
+.groupItemLabelWrapper {
+  display: flex;
+
+  justify-content: flex-start;
+  align-items: center;
+
+  padding: 0 9.5px;
+}
+
+.groupItemLabel {
+  font-family: var(--fontFamilySecondary);
+  font-weight: var(--fontPrimaryWeightRegular);
+  font-size: 16px;
+  line-height: 21px;
+  max-width: 221px;
+}
+
+.groupItemPriceWrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+
+  @media only screen and (max-width: 600px) {
+    flex-direction: column;
+  }
+
+  & > span:nth-child(2) {
+    margin-left: 16px;
+
+    @media only screen and (max-width: 600px) {
+      margin: 0;
+    }
+  }
+}
+
+.groupItemLabelNewPrice {
+  font-family: var(--fontFamilySecondary);
+  font-weight: var(--fontPrimaryWeightAccent);
+  font-size: 14px;
+  line-height: 21px;
+  white-space: nowrap;
+  color: var(--colorBlack);
+}
+
+.groupItemLabelOldPrice {
+  font-weight: var(--fontPrimaryWeightRegular);
+  color: var(--colorGray60);
+  text-decoration: line-through;
+}
+
+.fullWidth {
+  width: 100%;
+  max-width: 100%;
+}
+
+.groupItemLabelWrapperStart {
+  align-items: flex-start;
+}
+
+.groupItemDotCenter {
+  align-items: center;
+}
+
+.radioGroupModalLink {
+  font-weight: var(--fontPrimaryWeightRegular);
+  color: var(--colorTextLink);
+  text-decoration: underline;
+  font-size: 14px;
+  margin-left: 8px;
+}
+
+.radioStroke {
+  color: var(--colorText);
+  stroke: var(--colorText);
+}
+
+.radioStrokeDisabled {
+  color: var(--colorGray30);
+  stroke: var(--colorGray30);
+}
+
+.radioFill {
+  fill: var(--colorPrimary);
+}
+
+.radioFillDisabled {
+  fill: var(--colorGray30);
+}
