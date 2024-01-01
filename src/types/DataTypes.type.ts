@@ -12,8 +12,10 @@ type RecordType = {
   data: DataType[];
 };
 
-type SegmentType = "totalCalls";
+type SegmentType = "totalCalls" | "averageCallAmount";
 
 type SortType = "desc" | "asc" | "alpha";
 
-export type { RecordType, DataType, SegmentType, SortType };
+type ViewType = "monthly" | "daily" | "weekly" | "yearly";
+
+export type { RecordType, DataType, SegmentType, SortType, ViewType };

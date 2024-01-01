@@ -1,23 +1,72 @@
 import { useDataState } from "../../context/data.context";
-import { CallsAmount } from "./calls-amount/calls-amount.component";
+import { AverageCallAmount } from "./average-call-amount/average-call-amount";
 import { TotalCallsSection } from "./total-calls/total-calls.component";
-
-import { Sample1 } from "./sample1/sample1.component";
-import { Sample2 } from "./sample2/sample2.component";
-import { Sample3 } from "./sample3/sample3.component";
-import styles from "./charts.module.scss";
+import { Calendar as CalendarIcon } from "@carbon/icons-react";
 import { FilterButton } from "../filters/filters.component";
+import { SegmentType, ViewType } from "src/types/DataTypes.type";
+import { formatDate } from "src/helpers/date";
+import { useChart } from "src/hooks/useChart.hook";
+import { Container } from "../shared/container/container.component";
+import styles from "./charts.module.scss";
+
+type ChartHeaderProps = {
+  title: string;
+  segment: SegmentType;
+  segmentDateFrom: Date;
+  segmentDateTo: Date;
+  view: ViewType;
+};
+
+function ChartHeader(props: ChartHeaderProps) {
+  const { showDataRangePopup, changeViewPopup } = useChart();
+  const { title, segment, segmentDateFrom, segmentDateTo, view } = props;
+
+  return (
+    <>
+      <h3 className={styles.sectionTitle}>{title}</h3>
+
+      <div className={styles.header}>
+        <div>
+          <button
+            className={styles.actionButton}
+            onClick={() => showDataRangePopup(segment, segmentDateFrom)}
+          >
+            Zakres <CalendarIcon size={24} className={styles.icon} />
+          </button>
+          <h3 className={styles.subtitle}>
+            od {formatDate(segmentDateFrom)} <br />
+            do {formatDate(segmentDateTo)}
+          </h3>
+        </div>
+
+        <div>
+          <button
+            className={styles.actionButton}
+            onClick={() => changeViewPopup(segment)}
+          >
+            Widok <CalendarIcon size={24} className={styles.icon} />
+          </button>
+
+          <h3 className={styles.subtitle}>
+            {view === "daily" ? "Dzienny" : null}
+            {view === "weekly" ? "Tygodniowy" : null}
+            {view === "monthly" ? "Miesięczny" : null}
+            {view === "yearly" ? "Roczny" : null}
+          </h3>
+        </div>
+      </div>
+    </>
+  );
+}
 
 type SectionProps = {
-  title: string;
   children: React.ReactNode;
 };
 
-const Section = ({ title, children }: SectionProps) => {
+const Section = ({ children }: SectionProps) => {
   return (
     <div className={styles.section}>
-      <h3 className={styles.sectionTitle}>{title}</h3>
-      {children}
+      <Container>{children}</Container>
     </div>
   );
 };
@@ -25,7 +74,7 @@ const Section = ({ title, children }: SectionProps) => {
 const Charts = () => {
   const state = useDataState();
 
-  const { globalData } = state;
+  const { globalData, segmentData } = state;
 
   if (globalData.length === 0) {
     return null;
@@ -34,13 +83,13 @@ const Charts = () => {
   return (
     <div className={styles.wrapper}>
       <FilterButton />
-      <Section title="Łączna ilość połączeń">
+      <Section>
         <TotalCallsSection />
       </Section>
-      <Section title="Średnia ilość połączeń">
-        <CallsAmount />
+      <Section>
+        <AverageCallAmount />
       </Section>
-      <Section title="Średni czas trwania rozmowy (sekundy)">
+      {/* <Section title="Średni c  zas trwania rozmowy (sekundy)">
         <Sample1 />
       </Section>
       <Section title="Kontrahenci">
@@ -48,9 +97,9 @@ const Charts = () => {
       </Section>
       <Section title="Ilość rozmów < 10s">
         <Sample3 />
-      </Section>
+      </Section> */}
     </div>
   );
 };
 
-export { Charts };
+export { Charts, ChartHeader };

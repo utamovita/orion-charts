@@ -1,6 +1,12 @@
 import React, { useContext, useReducer } from "react";
-import { RecordType, SegmentType, SortType } from "../types/DataTypes.type";
-import { getDateRange } from "src/helpers/date";
+import {
+  RecordType,
+  SegmentType,
+  SortType,
+  ViewType,
+} from "../types/DataTypes.type";
+import { getDateRange, sumDatesByData } from "src/helpers/date";
+import { getUniqueNames } from "src/helpers/data";
 
 type State = {
   globalMinDate: Date;
@@ -14,6 +20,7 @@ type State = {
       selectedDateTo: Date;
       dateFrom: Date;
       dateTo: Date;
+      view: ViewType;
     };
   };
 };
@@ -40,6 +47,11 @@ type Action =
       sort: SortType;
     }
   | {
+      type: "UPDATE_VIEW";
+      view: ViewType;
+      segment: SegmentType;
+    }
+  | {
       type: "UPDATE_FILTER_SELECTION";
       checked: boolean;
       name: string;
@@ -58,19 +70,7 @@ export const DataDispatchContext = React.createContext<Dispatch | undefined>(
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case "ADD_GLOBAL_DATA": {
-      const sumDates = () => {
-        let allDates: Date[] = [];
-
-        action.data.forEach((item) => {
-          item.data.forEach((item) => {
-            allDates.push(item.date);
-          });
-        });
-
-        return allDates;
-      };
-
-      const allDates = sumDates();
+      const allDates = sumDatesByData(action.data);
       const { min, max } = getDateRange(allDates);
 
       const updatedSegmentData = {
@@ -79,11 +79,23 @@ function reducer(state: State, action: Action): State {
           selectedDateTo: max,
           dateFrom: min,
           dateTo: max,
-        },
+          view: "yearly",
+        } as const,
+
+        averageCallAmount: {
+          selectedDateFrom: min,
+          selectedDateTo: max,
+          dateFrom: min,
+          dateTo: max,
+          view: "yearly",
+        } as const,
       };
+
+      const uniqueNames = getUniqueNames(action.data);
 
       return {
         ...state,
+        filterSelection: uniqueNames,
         segmentData: updatedSegmentData,
         globalData: action.data,
         globalMinDate: min,
@@ -121,6 +133,18 @@ function reducer(state: State, action: Action): State {
       return {
         ...state,
         sort: action.sort,
+      };
+
+    case "UPDATE_VIEW":
+      return {
+        ...state,
+        segmentData: {
+          ...state.segmentData,
+          [action.segment]: {
+            ...state.segmentData[action.segment],
+            view: action.view,
+          },
+        },
       };
 
     case "UPDATE_FILTER_SELECTION":
@@ -162,6 +186,14 @@ const DataProvider = ({ children }: DataProviderProps) => {
         selectedDateTo: new Date(),
         dateFrom: new Date(),
         dateTo: new Date(),
+        view: "yearly",
+      },
+      averageCallAmount: {
+        selectedDateFrom: new Date(),
+        selectedDateTo: new Date(),
+        dateFrom: new Date(),
+        dateTo: new Date(),
+        view: "yearly",
       },
     },
   };

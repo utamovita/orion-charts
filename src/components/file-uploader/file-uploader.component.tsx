@@ -4,6 +4,7 @@ import cx from "classnames";
 import { useData } from "../../hooks/useData.hook";
 import styles from "./file-uploader.module.scss";
 import { useDataState } from "src/context/data.context";
+import { Container } from "../shared/container/container.component";
 
 const FileUploader = () => {
   const state = useDataState();
@@ -64,35 +65,37 @@ const FileUploader = () => {
   }
 
   return (
-    <div className={styles.wrapper}>
-      <>
-        <label
-          htmlFor="file"
-          className={cx(styles.dropContainer, {
-            [styles.dragActive]: isDragActive,
-          })}
-          ref={dropContainerRef}
-          onDragOver={(e) => {
-            e.preventDefault(), false;
-          }}
-          onDragEnter={() => setIsDragActive(true)}
-          onDragLeave={() => setIsDragActive(false)}
-          onDrop={handleDrop}
-        >
-          <span className={styles.dropTitle}>Upuść pliki tutaj</span>
-          lub
-          <input
-            type="file"
-            accept=".csv"
-            className={styles.input}
-            id="file"
-            onChange={handleFileChange}
-            ref={inputRef}
-          />
-        </label>
-        {error ? <p className={styles.error}>{error}</p> : null}
-      </>
-    </div>
+    <Container>
+      <div className={styles.wrapper}>
+        <>
+          <label
+            htmlFor="file"
+            className={cx(styles.dropContainer, {
+              [styles.dragActive]: isDragActive,
+            })}
+            ref={dropContainerRef}
+            onDragOver={(e) => {
+              e.preventDefault(), false;
+            }}
+            onDragEnter={() => setIsDragActive(true)}
+            onDragLeave={() => setIsDragActive(false)}
+            onDrop={handleDrop}
+          >
+            <span className={styles.dropTitle}>Upuść pliki tutaj</span>
+            lub
+            <input
+              type="file"
+              accept=".csv"
+              className={styles.input}
+              id="file"
+              onChange={handleFileChange}
+              ref={inputRef}
+            />
+          </label>
+          {error ? <p className={styles.error}>{error}</p> : null}
+        </>
+      </div>
+    </Container>
   );
 };
 

@@ -1,11 +1,5 @@
 @use "src/styles/utilities/_variables" as vr;
 
-.subtitle {
-  text-align: center;
-  color: var(--colorTextGray);
-  font-size: 18px;
-  font-weight: 500;
-}
 
 .totalCallsWrapper {
   display: flex;
@@ -38,30 +32,12 @@
   margin-left: vr.$spacingSize20;
 }
 
-.header {
+.noData {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-}
-
-.actionBar {
-  display: flex;
-  flex-direction: column;
-  align-items: end;
-  gap: vr.$spacingSize30;
-}
-
-.dateRangeButton {
+  height: 100%;
+  font-size: 24px;
   font-weight: bold;
-  display: flex;
-  font-family: var(--fontFamilyPrimary);
   color: var(--colorTextGray);
-  align-items: center;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-
-  .icon {
-    margin-left: vr.$spacingSize10;
-  }
-
 }

@@ -1,4 +1,8 @@
-import { useDataState } from "../context/data.context";
+import { useCallback } from "react";
+import { SegmentType } from "src/types/DataTypes.type";
+import { CustomDateRangePicker } from "src/components/shared/date-range-picker/date-range-picker.component";
+import { useModalDispatch } from "src/context/modal.context";
+import { ChangeViewForm } from "src/components/change-view-form/change-view-form.component";
 
 const chartColors = [
   "#ff990c",
@@ -21,9 +25,29 @@ const chartOptions = {
 } as const;
 
 function useChart() {
-  const state = useDataState();
+  const modalDispatch = useModalDispatch();
 
-  return { chartColors, chartOptions };
+  const showDataRangePopup = useCallback(
+    (segment: SegmentType, segmentDateFrom: Date) => {
+      const content = (
+        <CustomDateRangePicker min={segmentDateFrom} segment={segment} />
+      );
+
+      modalDispatch({ type: "SHOW", payload: { content } });
+    },
+    [modalDispatch]
+  );
+
+  const changeViewPopup = useCallback(
+    (segment: SegmentType) => {
+      const content = <ChangeViewForm segment={segment} />;
+
+      modalDispatch({ type: "SHOW", payload: { content } });
+    },
+    [modalDispatch]
+  );
+
+  return { chartColors, chartOptions, showDataRangePopup, changeViewPopup };
 }
 
 export { useChart };

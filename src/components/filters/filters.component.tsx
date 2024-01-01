@@ -10,6 +10,7 @@ import { Checkbox } from "../shared/form/checkbox/checkbox.component";
 import { SortType } from "src/types/DataTypes.type";
 import styles from "./filters.module.scss";
 import { RadioGroup } from "../shared/form/radio-group/radio-group.component";
+import { getUniqueNames } from "src/helpers/data";
 
 const FilterContent = () => {
   const dataDispatch = useDataDispatch();
@@ -17,17 +18,7 @@ const FilterContent = () => {
 
   const { globalData, filterSelection, sort } = state;
 
-  const getUniqueNames = useCallback(() => {
-    const allNames: string[] = [];
-
-    globalData.forEach((item) => {
-      allNames.push(item.name);
-    });
-
-    return [...new Set(allNames)].sort();
-  }, [globalData]);
-
-  const uniqueNames = getUniqueNames();
+  const uniqueNames = getUniqueNames(globalData);
 
   const handleSort = (value: string) => {
     if (value === "desc" || value === "asc" || value === "alpha") {
@@ -45,7 +36,11 @@ const FilterContent = () => {
         <h3 className={styles.contentTitle}>
           Sortuj <SortDescIcon size={22} className={styles.icon} />
         </h3>
-        <RadioGroup onChange={(value) => handleSort(value)} value={sort}>
+        <RadioGroup
+          onChange={(value) => handleSort(value)}
+          value={sort}
+          aria-label="Sortuj"
+        >
           <RadioGroup.Item value="desc" children={"Malejąco"} />
           <RadioGroup.Item value="asc" children={"Rosnąco"} />
           <RadioGroup.Item value="alpha" children={"Alfabetycznie"} />
@@ -62,7 +57,7 @@ const FilterContent = () => {
             <Checkbox
               key={name}
               label={name}
-              onChange={(checked) => handleSelection(checked, name)}          
+              onChange={(checked) => handleSelection(checked, name)}
               isLarge
               isSelected={filterSelection.includes(name)}
             />

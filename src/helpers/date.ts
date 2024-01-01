@@ -1,3 +1,5 @@
+import { RecordType } from "src/types/DataTypes.type";
+
 function formatDate(date: Date): string {
   const d = new Date(date);
 
@@ -20,4 +22,16 @@ const getDateRange = (dates: Date[]): { min: Date; max: Date } => {
   return { min, max };
 };
 
-export { formatDate, getDateRange };
+const sumDatesByData = (data: RecordType[]) => {
+  let allDates: Date[] = [];
+
+  data.forEach((item) => {
+    item.data.forEach((item) => {
+      allDates.push(item.date);
+    });
+  });
+
+  return allDates;
+};
+
+export { formatDate, getDateRange, sumDatesByData };

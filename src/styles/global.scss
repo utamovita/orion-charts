@@ -2,10 +2,11 @@
 @import "./fonts";
 
 :root {
-
   --fontFamilyPrimary: "Gotham", sans-serif;
 
   --scrollbar-width: 15px;
+
+  --boxShadow: 0 1px 5px 1px rgba(57, 57, 57, 0.24);
 
   --colorWhite: #f6f7f9;
   --colorBlack: #000;
@@ -17,12 +18,14 @@
 
   --colorSecondary: #fe782f;
   --colorSecondaryLight: #ff990c;
-  
+
   --colorText: #505050;
   --colorTextGray: #707070;
   --colorTextError: #ff0000;
   --colorBackgroundPrimary: #f9f9f9;
-  --boxShadow: 0 1px 5px 1px rgba(57, 57, 57, 0.24);
+
+  --colorSectionPrimary: #fff;
+  --colorSectionSecondary: --colorBackgroundPrimary;
 }
 
 body {
@@ -30,4 +33,3 @@ body {
   background-color: var(--colorBackgroundPrimary);
   color: var(--colorText);
 }
-
