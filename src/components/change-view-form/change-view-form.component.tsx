@@ -20,7 +20,6 @@ const ChangeViewForm = (props: ChangeViewFormProps) => {
       value === "yearly" ||
       value === "weekly"
     ) {
-      console.log(segment);
       dataDispatch({ type: "UPDATE_VIEW", view: value, segment });
     }
   };

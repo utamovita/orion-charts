@@ -1,15 +1,88 @@
 import styles from "./total-calls.module.scss";
-import { Doughnut } from "react-chartjs-2";
+import { Doughnut, Line } from "react-chartjs-2";
 import { useTotalCalls } from "./use-total-calls.hook";
 import { useDataState } from "src/context/data.context";
 import { ChartHeader } from "../charts.component";
+import { useChart } from "src/hooks/useChart.hook";
+import { useMainChart } from "src/hooks/use-main-chart.hook";
+import {
+  ArrowLeft as ArrowLeftIcon,
+  ArrowRight as ArrowRightIcon,
+} from "@carbon/icons-react";
+
+const MainChart = () => {
+  const { mainChartData } = useTotalCalls();
+  const { mainChartOptions } = useChart();
+  const {
+    getChartTitle,
+    handleNextButtonClick,
+    handlePrevButtonClick,
+    prevButtonDisabled,
+    nextButtonDisabled,
+  } = useMainChart();
+
+  const chartTitle = getChartTitle("totalCalls");
+  const prevBtnDisabled = prevButtonDisabled("totalCalls");
+
+  return (
+    <div className={styles.mainChartWrapper}>
+      <h3 className={styles.mainChartTitle}>{chartTitle}</h3>
+      <div className={styles.mainChart}>
+        <button
+          className={styles.arrowBtn}
+          onClick={() => handlePrevButtonClick("totalCalls")}
+          disabled={prevBtnDisabled}
+        >
+          <ArrowLeftIcon />
+        </button>
+
+        <div className={styles.mainChartMiddle}>
+          <Line options={mainChartOptions} data={mainChartData} />
+        </div>
+        <button
+          className={styles.arrowBtn}
+          onClick={() => handleNextButtonClick("totalCalls")}
+          disabled={nextButtonDisabled("totalCalls")}
+        >
+          <ArrowRightIcon />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const Summary = () => {
+  const { summaryChartData, summaryData } = useTotalCalls();
+  const { summaryChartOptions, chartColors } = useChart();
+
+  return (
+    <div className={styles.totalCallsWrapper}>
+      <div className={styles.doughnutWrapper}>
+        <Doughnut data={summaryChartData} options={summaryChartOptions} />
+      </div>
+
+      <ul className={styles.totalCalls}>
+        {summaryData.map(({ name, amount }, index) => (
+          <li key={name} className={styles.element}>
+            <span
+              className={styles.totalCallsColor}
+              style={{ backgroundColor: chartColors[index] }}
+            ></span>
+            <span>{name} </span>
+            <span className={styles.elementAmount}>{amount}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
 const TotalCallsSection = () => {
-  const { chartOptions, chartColors, chartData, listData } = useTotalCalls();
   const state = useDataState();
+  const { summaryData } = useTotalCalls();
   const { dateFrom, dateTo, view } = state.segmentData.totalCalls;
 
-  if (listData.length === 0) {
+  if (summaryData.length === 0) {
     return <h3 className={styles.noData}>Brak danych do wyświetlenia</h3>;
   }
 
@@ -22,25 +95,8 @@ const TotalCallsSection = () => {
         segmentDateTo={dateTo}
         view={view}
       />
-
-      <div className={styles.totalCallsWrapper}>
-        <div className={styles.doughnutWrapper}>
-          <Doughnut data={chartData} options={chartOptions} />
-        </div>
-
-        <ul className={styles.totalCalls}>
-          {listData.map(({ name, amount }, index) => (
-            <li key={name} className={styles.element}>
-              <span
-                className={styles.totalCallsColor}
-                style={{ backgroundColor: chartColors[index] }}
-              ></span>
-              <span>{name} </span>
-              <span className={styles.elementAmount}>{amount}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <MainChart />
+      <Summary />
     </>
   );
 };

@@ -24,6 +24,22 @@ const chartOptions = {
   },
 } as const;
 
+const summaryChartOptions = {
+  plugins: {
+    legend: {
+      display: false,
+    },
+  },
+} as const;
+
+const mainChartOptions = {
+  plugins: {
+    legend: {
+      display: false,
+    },
+  },
+} as const;
+
 function useChart() {
   const modalDispatch = useModalDispatch();
 
@@ -47,7 +63,14 @@ function useChart() {
     [modalDispatch]
   );
 
-  return { chartColors, chartOptions, showDataRangePopup, changeViewPopup };
+  return {
+    chartColors,
+    chartOptions,
+    summaryChartOptions,
+    mainChartOptions,
+    showDataRangePopup,
+    changeViewPopup,
+  };
 }
 
 export { useChart };

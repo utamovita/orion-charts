@@ -21,6 +21,9 @@ type State = {
       dateFrom: Date;
       dateTo: Date;
       view: ViewType;
+      mainChart: {
+        currentDate: Date;
+      };
     };
   };
 };
@@ -55,6 +58,11 @@ type Action =
       type: "UPDATE_FILTER_SELECTION";
       checked: boolean;
       name: string;
+    }
+  | {
+      type: "UPDATE_CURRENT_DATE";
+      currentDate: Date;
+      segment: SegmentType;
     };
 
 type Dispatch = (action: Action) => void;
@@ -73,22 +81,20 @@ function reducer(state: State, action: Action): State {
       const allDates = sumDatesByData(action.data);
       const { min, max } = getDateRange(allDates);
 
-      const updatedSegmentData = {
-        totalCalls: {
-          selectedDateFrom: min,
-          selectedDateTo: max,
-          dateFrom: min,
-          dateTo: max,
-          view: "yearly",
-        } as const,
+      const defaultValues = {
+        selectedDateFrom: min,
+        selectedDateTo: max,
+        dateFrom: min,
+        dateTo: max,
+        view: "daily",
+        mainChart: {
+          currentDate: min,
+        },
+      } as const;
 
-        averageCallAmount: {
-          selectedDateFrom: min,
-          selectedDateTo: max,
-          dateFrom: min,
-          dateTo: max,
-          view: "yearly",
-        } as const,
+      const updatedSegmentData = {
+        totalCalls: defaultValues,
+        averageCallAmount: defaultValues,
       };
 
       const uniqueNames = getUniqueNames(action.data);
@@ -142,7 +148,28 @@ function reducer(state: State, action: Action): State {
           ...state.segmentData,
           [action.segment]: {
             ...state.segmentData[action.segment],
+            dateFrom: state.globalMinDate,
+            dateTo: state.globalMaxDate,
+            selectedDateFrom: state.globalMinDate,
+            selectedDateTo: state.globalMaxDate,
             view: action.view,
+            mainChart: {
+              currentDate: state.globalMinDate,
+            }
+          },
+        },
+      };
+    case "UPDATE_CURRENT_DATE":
+      return {
+        ...state,
+        segmentData: {
+          ...state.segmentData,
+          [action.segment]: {
+            ...state.segmentData[action.segment],
+            mainChart: {
+              ...state.segmentData[action.segment].mainChart,
+              currentDate: action.currentDate,
+            },
           },
         },
       };
@@ -157,12 +184,11 @@ function reducer(state: State, action: Action): State {
         };
       }
 
-      if (action.checked) {
-        return {
-          ...state,
-          filterSelection: [...state.filterSelection, action.name],
-        };
-      }
+      // checked === true
+      return {
+        ...state,
+        filterSelection: [...state.filterSelection, action.name],
+      };
 
     default:
       throw new Error();
@@ -174,6 +200,17 @@ type DataProviderProps = {
 };
 
 const DataProvider = ({ children }: DataProviderProps) => {
+  const defaultSegmentValues = {
+    selectedDateFrom: new Date(),
+    selectedDateTo: new Date(),
+    dateFrom: new Date(),
+    dateTo: new Date(),
+    view: "daily",
+    mainChart: {
+      currentDate: new Date(),
+    },
+  } as const;
+
   const defaultState: State = {
     globalData: [],
     globalMinDate: new Date(),
@@ -181,20 +218,8 @@ const DataProvider = ({ children }: DataProviderProps) => {
     sort: "desc",
     filterSelection: [],
     segmentData: {
-      totalCalls: {
-        selectedDateFrom: new Date(),
-        selectedDateTo: new Date(),
-        dateFrom: new Date(),
-        dateTo: new Date(),
-        view: "yearly",
-      },
-      averageCallAmount: {
-        selectedDateFrom: new Date(),
-        selectedDateTo: new Date(),
-        dateFrom: new Date(),
-        dateTo: new Date(),
-        view: "yearly",
-      },
+      totalCalls: defaultSegmentValues,
+      averageCallAmount: defaultSegmentValues,
     },
   };
 

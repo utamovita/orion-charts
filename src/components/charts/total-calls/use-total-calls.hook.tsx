@@ -1,65 +1,39 @@
+import { useFilters } from "src/components/filters/use-filters.hook";
 import { useDataState } from "src/context/data.context";
-import { useChart } from "src/hooks/useChart.hook";
-
-const chartOptions = {
-  plugins: {
-    legend: {
-      display: false,
-    },
-  },
-} as const;
+import { useMainChart } from "src/hooks/use-main-chart.hook";
+import { useSummaryChart } from "src/hooks/use-summary-chart";
 
 export function useTotalCalls() {
-  const state = useDataState();
-  const { chartColors } = useChart();
-  const { globalData, sort, segmentData, filterSelection } = state;
-  const { dateFrom, dateTo } = segmentData.totalCalls;
+  const { dateFrom, dateTo } = useDataState().segmentData.totalCalls;
+  const { getOrderedSummaryData, getChartData } = useSummaryChart();
+  const { getFilteredData } = useFilters();
+  const { getLabels } = useMainChart();
 
-  const filteredData = globalData
-    .map((item) => ({
-      name: item.name,
-      data: item.data.filter((item) => {
-        return item.date >= dateFrom && item.date <= dateTo;
-      }),
-    }))
-    .filter((item) => {
-      return filterSelection.includes(item.name);
-    });
+  const filteredData = getFilteredData(dateFrom, dateTo);
 
-  const listData = filteredData.map((item) => ({
+  // main chart
+  const mainChartLabels = getLabels("totalCalls");
+  const mainChartDatasets: number[] = [];
+  const mainChartData = getChartData(mainChartLabels, mainChartDatasets);
+
+  // summary chart
+  const summaryData = filteredData.map((item) => ({
     name: item.name,
     amount: item.data.length,
   }));
 
-  if (sort === "desc") {
-    listData.sort((a, b) => b.amount - a.amount);
-  }
+  const summaryOrderedData = getOrderedSummaryData(summaryData);
+  const summaryChartlabels = filteredData.map((item) => item.name);
+  const summaryChartDatasets = filteredData.map((item) => item.data.length);
 
-  if (sort === "asc") {
-    listData.sort((a, b) => a.amount - b.amount);
-  }
-
-  if (sort === "alpha") {
-    listData.sort((a, b) => a.name.localeCompare(b.name));
-  }
-
-  const labels = filteredData.map((item) => item.name);
-  const datasets = filteredData.map((item) => item.data.length);
-
-  const chartData = {
-    labels,
-    datasets: [
-      {
-        data: datasets,
-        backgroundColor: chartColors,
-      },
-    ],
-  };
+  const summaryChartData = getChartData(
+    summaryChartlabels,
+    summaryChartDatasets
+  );
 
   return {
-    chartOptions,
-    chartData,
-    chartColors,
-    listData: listData,
+    mainChartData,
+    summaryChartData,
+    summaryData: summaryOrderedData,
   };
 }
