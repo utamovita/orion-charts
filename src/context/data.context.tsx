@@ -131,6 +131,9 @@ function reducer(state: State, action: Action): State {
             ...state.segmentData[action.segment],
             selectedDateFrom: action.dateFrom,
             selectedDateTo: action.dateTo,
+            mainChart: {
+              currentDate: action.dateFrom,
+            },
           },
         },
       };
@@ -155,7 +158,7 @@ function reducer(state: State, action: Action): State {
             view: action.view,
             mainChart: {
               currentDate: state.globalMinDate,
-            }
+            },
           },
         },
       };

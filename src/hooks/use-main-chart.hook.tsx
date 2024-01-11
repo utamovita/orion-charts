@@ -1,3 +1,4 @@
+import { min } from "date-fns";
 import { useDataDispatch, useDataState } from "src/context/data.context";
 import { formatDate } from "src/helpers/date";
 import { SegmentType } from "src/types/DataTypes.type";
@@ -47,12 +48,11 @@ const yearlyViewChartLabels = [
 ];
 
 function useMainChart() {
-  const { segmentData, globalMinDate, globalMaxDate } = useDataState();
+  const { segmentData } = useDataState();
   const dispatch = useDataDispatch();
 
   const getLabels = (segment: SegmentType) => {
     const view = segmentData[segment].view;
-    const currentDate = segmentData[segment].mainChart.currentDate;
 
     switch (view) {
       case "daily":
@@ -204,26 +204,27 @@ function useMainChart() {
   const prevButtonDisabled = (segment: SegmentType) => {
     const view = segmentData[segment].view;
     const currentDate = segmentData[segment].mainChart.currentDate;
+    const minDate = segmentData[segment].dateFrom;
 
     switch (view) {
       case "daily":
         const yesterday = new Date(currentDate);
         yesterday.setDate(yesterday.getDate() - 1);
 
-        return yesterday < globalMinDate;
+        return yesterday < minDate;
 
       case "weekly":
         const prevWeek = new Date(currentDate);
         prevWeek.setDate(prevWeek.getDate() - 7);
 
-        return prevWeek < globalMinDate;
+        return prevWeek < minDate;
 
       case "monthly":
         const d = new Date(currentDate);
         d.setMonth(d.getMonth() - 1);
 
         const prevMonth = d.getMonth();
-        const minMonth = globalMinDate.getMonth();
+        const minMonth = minDate.getMonth();
 
         return prevMonth < minMonth;
 
@@ -231,7 +232,7 @@ function useMainChart() {
         const prevYear = new Date(currentDate);
         prevYear.setFullYear(prevYear.getFullYear() - 1);
 
-        const minYear = globalMinDate.getFullYear();
+        const minYear = minDate.getFullYear();
 
         return prevYear.getFullYear() < minYear;
     }
@@ -240,26 +241,27 @@ function useMainChart() {
   const nextButtonDisabled = (segment: SegmentType) => {
     const view = segmentData[segment].view;
     const currentDate = segmentData[segment].mainChart.currentDate;
+    const maxDate = segmentData[segment].dateTo;
 
     switch (view) {
       case "daily":
         const tomorrow = new Date(currentDate);
         tomorrow.setDate(tomorrow.getDate() + 1);
 
-        return tomorrow > globalMaxDate;
+        return tomorrow > maxDate;
 
       case "weekly":
         const nextWeek = new Date(currentDate);
         nextWeek.setDate(nextWeek.getDate() + 7);
 
-        return nextWeek > globalMaxDate;
+        return nextWeek > maxDate;
 
       case "monthly":
         const d = new Date(currentDate);
         d.setMonth(d.getMonth() + 1);
 
         const nextMonth = d.getMonth();
-        const maxMonth = globalMaxDate.getMonth();
+        const maxMonth = maxDate.getMonth();
 
         return nextMonth > maxMonth;
 
@@ -267,7 +269,7 @@ function useMainChart() {
         const nextYear = new Date(currentDate);
         nextYear.setFullYear(nextYear.getFullYear() + 1);
 
-        const maxYear = globalMaxDate.getFullYear();
+        const maxYear = maxDate.getFullYear();
 
         return nextYear.getFullYear() > maxYear;
     }
