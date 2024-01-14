@@ -1,7 +1,8 @@
-import { min } from "date-fns";
 import { useDataDispatch, useDataState } from "src/context/data.context";
-import { formatDate } from "src/helpers/date";
+import { formatDate, getDayData } from "src/helpers/date";
 import { SegmentType } from "src/types/DataTypes.type";
+import { useChart } from "./use-chart.hook";
+import { useFilters } from "src/components/filters/use-filters.hook";
 
 const dailyViewChartLabels = [
   "06:00",
@@ -50,6 +51,8 @@ const yearlyViewChartLabels = [
 function useMainChart() {
   const { segmentData } = useDataState();
   const dispatch = useDataDispatch();
+  const { chartColors } = useChart();
+  const { getFilteredData } = useFilters();
 
   const getLabels = (segment: SegmentType) => {
     const view = segmentData[segment].view;
@@ -73,6 +76,7 @@ function useMainChart() {
   const getChartTitle = (segment: SegmentType) => {
     const d = segmentData[segment].mainChart.currentDate;
     const view = segmentData[segment].view;
+    const { getFilteredData } = useFilters();
 
     switch (view) {
       case "daily":
@@ -275,6 +279,83 @@ function useMainChart() {
     }
   };
 
+  const getMainChartData = (
+    labelNames: string[],
+    labels: string[],
+    data: number[][]
+  ) => {
+    const datasets = data.map((item, index) => ({
+      label: labelNames[index],
+      data: item.map((item) => item),
+      backgroundColor: chartColors[index],
+      borderColor: chartColors[index],
+    }));
+
+    return {
+      labels,
+      datasets,
+    };
+  };
+
+  const getMainChartDatasets = (segment: SegmentType) => {
+    const view = segmentData[segment].view;
+    const currentDate = segmentData[segment].mainChart.currentDate;
+    const dateFrom = segmentData[segment].dateFrom;
+    const dateTo = segmentData[segment].dateTo;
+    const data = getFilteredData(dateFrom, dateTo);
+
+    if (view === "daily") {
+      const currentDayData = getDayData(currentDate, data);
+
+      const datasets: number[][] = currentDayData.map((item) => {
+        const itemArray: number[] = [
+          0, //06:00
+          0, //07:00
+          0, //08:00
+          0, //09:00
+          0, //10:00
+          0, //11:00
+          0, //12:00
+          0, //13:00
+          0, //14:00
+          0, //15:00
+          0, //16:00
+          0, //17:00
+          0, //18:00
+          0, //19:00
+        ];
+
+        item.data.map((item) => {
+          if (item.date) {
+            const itemHour = new Date(item.date).getHours();
+
+            if (itemHour >= 6 && itemHour <= 19) {
+              itemArray[itemHour - 6] += 1;
+            }
+          }
+        });
+
+        return itemArray;
+      });
+
+      return datasets;
+    }
+
+    if (view === "weekly") {
+      //TODO
+    }
+
+    if (view === "monthly") {
+      //TODO
+    }
+
+    if (view === "yearly") {
+      //TODO
+    }
+
+    return [];
+  };
+
   return {
     getLabels,
     getChartTitle,
@@ -282,6 +363,8 @@ function useMainChart() {
     handleNextButtonClick,
     prevButtonDisabled,
     nextButtonDisabled,
+    getMainChartData,
+    getMainChartDatasets,
   };
 }
 

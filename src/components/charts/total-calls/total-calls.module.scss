@@ -21,14 +21,25 @@
   max-width: 500px;
 }
 
+.list {
+  counter-reset: my-awesome-counter;
+}
+
 .element {
   display: flex;
   align-items: center;
+  counter-increment: my-awesome-counter;
+  gap: 4px;
+  &::before {
+    content: counter(my-awesome-counter) " -";
+    display: flex;
+    margin-right: var(--spacingSize10);
+  }
+  
 }
 
 .elementAmount {
   font-weight: bold;
-  margin-left: vr.$spacingSize20;
 }
 
 .noData {

@@ -3,7 +3,7 @@ import { Doughnut, Line } from "react-chartjs-2";
 import { useTotalCalls } from "./use-total-calls.hook";
 import { useDataState } from "src/context/data.context";
 import { ChartHeader } from "../charts.component";
-import { useChart } from "src/hooks/useChart.hook";
+import { useChart } from "src/hooks/use-chart.hook";
 import { useMainChart } from "src/hooks/use-main-chart.hook";
 import {
   ArrowLeft as ArrowLeftIcon,
@@ -53,7 +53,7 @@ const MainChart = () => {
 
 const Summary = () => {
   const { summaryChartData, summaryData } = useTotalCalls();
-  const { summaryChartOptions, chartColors } = useChart();
+  const { summaryChartOptions } = useChart();
 
   return (
     <div className={styles.totalCallsWrapper}>
@@ -61,18 +61,14 @@ const Summary = () => {
         <Doughnut data={summaryChartData} options={summaryChartOptions} />
       </div>
 
-      <ul className={styles.totalCalls}>
+      <ol className={styles.list}>
         {summaryData.map(({ name, amount }, index) => (
           <li key={name} className={styles.element}>
-            <span
-              className={styles.totalCallsColor}
-              style={{ backgroundColor: chartColors[index] }}
-            ></span>
-            <span>{name} </span>
+            <span>{name} -</span>
             <span className={styles.elementAmount}>{amount}</span>
           </li>
         ))}
-      </ul>
+      </ol>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { useChart } from "src/hooks/useChart.hook";
+import { useChart } from "src/hooks/use-chart.hook";
 
 export function useAverageCallAmount() {
   const { chartColors } = useChart();

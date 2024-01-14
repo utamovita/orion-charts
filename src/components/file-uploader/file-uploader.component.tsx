@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import Papa from "papaparse";
 import cx from "classnames";
-import { useData } from "../../hooks/useData.hook";
+import { useData } from "../../hooks/use-data.hook";
 import styles from "./file-uploader.module.scss";
 import { useDataState } from "src/context/data.context";
 import { Container } from "../shared/container/container.component";

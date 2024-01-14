@@ -1,16 +1,9 @@
 import { Bar } from "react-chartjs-2";
-import { useChart } from "../../../hooks/useChart.hook";
+import { useChart } from "../../../hooks/use-chart.hook";
 
 const Sample2 = () => {
   const { chartColors, chartOptions } = useChart();
-  const chartLabels = [
-    "DE",
-    "AT",
-    "NL",
-    "SWE",
-    "BE",
-    "US",
-  ];
+  const chartLabels = ["DE", "AT", "NL", "SWE", "BE", "US"];
 
   const chartData = {
     labels: chartLabels,

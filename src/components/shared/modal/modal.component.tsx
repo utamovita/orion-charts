@@ -2,8 +2,8 @@ import React, { useCallback, useRef, useEffect } from "react";
 
 import styles from "./modal.module.scss";
 import { useModalDispatch, useModalState } from "src/context/modal.context";
-import { useLockedBody } from "src/hooks/useLockedBody";
-import { useOnClickOutside } from "src/hooks/useOnClickOutside";
+import { useLockedBody } from "src/hooks/use-locked-body";
+import { useOnClickOutside } from "src/hooks/use-on-click-outside.hook";
 import { Close as CloseIcon } from "@carbon/icons-react";
 
 export const Modal = React.memo(() => {

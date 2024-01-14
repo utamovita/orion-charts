@@ -1,5 +1,5 @@
 import { Bar } from "react-chartjs-2";
-import { useChart } from "../../../hooks/useChart.hook";
+import { useChart } from "../../../hooks/use-chart.hook";
 
 const Sample3 = () => {
   const { chartColors, chartOptions } = useChart();
@@ -15,7 +15,7 @@ const Sample3 = () => {
     "Wrzesień",
     "Październik",
     "Listopad",
-    "Grudzień"
+    "Grudzień",
   ];
 
   const chartData = {

@@ -1,39 +1,37 @@
 import { useFilters } from "src/components/filters/use-filters.hook";
 import { useDataState } from "src/context/data.context";
 import { useMainChart } from "src/hooks/use-main-chart.hook";
-import { useSummaryChart } from "src/hooks/use-summary-chart";
+import { useSummaryChart } from "src/hooks/use-summary-chart.hook";
+import { RecordType } from "src/types/DataTypes.type";
 
 export function useTotalCalls() {
   const { dateFrom, dateTo } = useDataState().segmentData.totalCalls;
-  const { getOrderedSummaryData, getChartData } = useSummaryChart();
+  const { getSummaryListData, getSummaryChartData, getSummaryChartDatasets } =
+    useSummaryChart();
   const { getFilteredData } = useFilters();
-  const { getLabels } = useMainChart();
+  const { getLabels, getMainChartData, getMainChartDatasets } = useMainChart();
 
-  const filteredData = getFilteredData(dateFrom, dateTo);
+  const filteredData: RecordType[] = getFilteredData(dateFrom, dateTo);
+  const labelNames = filteredData.map((item) => item.name);
 
-  // main chart
   const mainChartLabels = getLabels("totalCalls");
-  const mainChartDatasets: number[] = [];
-  const mainChartData = getChartData(mainChartLabels, mainChartDatasets);
+  const mainChartDatasets = getMainChartDatasets("totalCalls");
+  const mainChartData = getMainChartData(
+    labelNames,
+    mainChartLabels,
+    mainChartDatasets
+  );
 
-  // summary chart
-  const summaryData = filteredData.map((item) => ({
-    name: item.name,
-    amount: item.data.length,
-  }));
-
-  const summaryOrderedData = getOrderedSummaryData(summaryData);
-  const summaryChartlabels = filteredData.map((item) => item.name);
-  const summaryChartDatasets = filteredData.map((item) => item.data.length);
-
-  const summaryChartData = getChartData(
-    summaryChartlabels,
+  const summaryData = getSummaryListData("totalCalls");
+  const summaryChartDatasets = getSummaryChartDatasets("totalCalls");
+  const summaryChartData = getSummaryChartData(
+    labelNames,
     summaryChartDatasets
   );
 
   return {
     mainChartData,
     summaryChartData,
-    summaryData: summaryOrderedData,
+    summaryData,
   };
 }

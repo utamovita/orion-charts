@@ -1,3 +1,4 @@
+import { DataType } from "src/types/DataTypes.type";
 import { RecordType } from "src/types/DataTypes.type";
 
 function formatDate(date: Date): string {
@@ -34,4 +35,53 @@ const sumDatesByData = (data: RecordType[]) => {
   return allDates;
 };
 
-export { formatDate, getDateRange, sumDatesByData };
+const filterDataByPassedDay = (currentDate: Date, data: Date[]) => {
+  const dataFromCurrentDay = data.filter((item) => {
+    const itemDate = new Date(item);
+    const itemDay = itemDate.getDate();
+    const itemMonth = itemDate.getMonth();
+    const itemYear = itemDate.getFullYear();
+
+    const currentDay = currentDate.getDate();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+
+    return (
+      itemDay === currentDay &&
+      itemMonth === currentMonth &&
+      itemYear === currentYear
+    );
+  });
+
+  return dataFromCurrentDay;
+};
+
+const getDayData = (currentDate: Date, data: RecordType[]) => {
+  const currentDay = currentDate.getDate();
+  const currentMonth = currentDate.getMonth();
+  const currentYear = currentDate.getFullYear();
+
+  const dataFromCurrentDay: RecordType[] = data.map((item) => {
+    const itemData: DataType[] = item.data.filter((item) => {
+      const itemDate = new Date(item.date);
+      const itemDay = itemDate.getDate();
+      const itemMonth = itemDate.getMonth();
+      const itemYear = itemDate.getFullYear();
+
+      return (
+        itemDay === currentDay &&
+        itemMonth === currentMonth &&
+        itemYear === currentYear
+      );
+    });
+
+    return {
+      name: item.name,
+      data: itemData,
+    };
+  });
+
+  return dataFromCurrentDay;
+};
+
+export { formatDate, getDateRange, sumDatesByData, getDayData };

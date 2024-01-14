@@ -1,5 +1,5 @@
 import { Bar } from "react-chartjs-2";
-import { useChart } from "../../../hooks/useChart.hook";
+import { useChart } from "../../../hooks/use-chart.hook";
 import { useAverageCallAmount } from "./use-average-call-amount.hook";
 import { ChartHeader } from "../charts.component";
 import { useDataState } from "src/context/data.context";

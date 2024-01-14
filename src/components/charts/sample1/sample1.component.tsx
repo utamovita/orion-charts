@@ -1,5 +1,5 @@
 import { Line } from "react-chartjs-2";
-import { useChart } from "../../../hooks/useChart.hook";
+import { useChart } from "../../../hooks/use-chart.hook";
 
 const Sample1 = () => {
   const { chartColors } = useChart();
@@ -36,7 +36,7 @@ const Sample1 = () => {
         position: "top" as const,
       },
     },
-  
+
     tension: 0.2,
   } as const;
 

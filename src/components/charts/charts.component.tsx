@@ -5,7 +5,7 @@ import { Calendar as CalendarIcon } from "@carbon/icons-react";
 import { FilterButton } from "../filters/filters.component";
 import { SegmentType, ViewType } from "src/types/DataTypes.type";
 import { formatDate } from "src/helpers/date";
-import { useChart } from "src/hooks/useChart.hook";
+import { useChart } from "src/hooks/use-chart.hook";
 import { Container } from "../shared/container/container.component";
 import styles from "./charts.module.scss";
 
