@@ -5,7 +5,7 @@ import { useSummaryChart } from "src/hooks/use-summary-chart.hook";
 import { RecordType } from "src/types/DataTypes.type";
 
 export function useTotalCalls() {
-  const { dateFrom, dateTo } = useDataState().segmentData.totalCalls;
+  const { dateFrom, dateTo, mainChart } = useDataState().segmentData.totalCalls;
   const { getSummaryListData, getSummaryChartData, getSummaryChartDatasets } =
     useSummaryChart();
   const { getFilteredData } = useFilters();
