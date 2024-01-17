@@ -30,40 +30,40 @@ type State = {
 
 type Action =
   | {
-      type: "ADD_GLOBAL_DATA";
-      data: RecordType[];
-    }
+    type: "ADD_GLOBAL_DATA";
+    data: RecordType[];
+  }
   | {
-      type: "UPDATE_DATE_RANGE";
-      dateFrom: Date;
-      dateTo: Date;
-      segment: SegmentType;
-    }
+    type: "UPDATE_DATE_RANGE";
+    dateFrom: Date;
+    dateTo: Date;
+    segment: SegmentType;
+  }
   | {
-      type: "UPDATE_SELECTED_DATE_RANGE";
-      dateFrom: Date;
-      dateTo: Date;
-      segment: SegmentType;
-    }
+    type: "UPDATE_SELECTED_DATE_RANGE";
+    dateFrom: Date;
+    dateTo: Date;
+    segment: SegmentType;
+  }
   | {
-      type: "UPDATE_SORTING";
-      sort: SortType;
-    }
+    type: "UPDATE_SORTING";
+    sort: SortType;
+  }
   | {
-      type: "UPDATE_VIEW";
-      view: ViewType;
-      segment: SegmentType;
-    }
+    type: "UPDATE_VIEW";
+    view: ViewType;
+    segment: SegmentType;
+  }
   | {
-      type: "UPDATE_FILTER_SELECTION";
-      checked: boolean;
-      name: string;
-    }
+    type: "UPDATE_FILTER_SELECTION";
+    checked: boolean;
+    name: string;
+  }
   | {
-      type: "UPDATE_CURRENT_DATE";
-      currentDate: Date;
-      segment: SegmentType;
-    };
+    type: "UPDATE_CURRENT_DATE";
+    currentDate: Date;
+    segment: SegmentType;
+  };
 
 type Dispatch = (action: Action) => void;
 
@@ -81,14 +81,20 @@ function reducer(state: State, action: Action): State {
       const allDates = sumDatesByData(action.data);
       const { min, max } = getDateRange(allDates);
 
+      const minDate = new Date(min);
+      minDate.setHours(0, 0, 0, 0);
+
+      const maxDate = new Date(max);
+      maxDate.setHours(23, 59, 59, 999)
+
       const defaultValues = {
-        selectedDateFrom: min,
-        selectedDateTo: max,
-        dateFrom: min,
-        dateTo: max,
+        selectedDateFrom: minDate,
+        selectedDateTo: maxDate,
+        dateFrom: minDate,
+        dateTo: maxDate,
         view: "daily",
         mainChart: {
-          currentDate: min,
+          currentDate: minDate,
         },
       } as const;
 
@@ -104,8 +110,8 @@ function reducer(state: State, action: Action): State {
         filterSelection: uniqueNames,
         segmentData: updatedSegmentData,
         globalData: action.data,
-        globalMinDate: min,
-        globalMaxDate: max,
+        globalMinDate: minDate,
+        globalMaxDate: maxDate,
       };
     }
 
@@ -120,7 +126,7 @@ function reducer(state: State, action: Action): State {
             dateTo: action.dateTo,
             mainChart: {
               currentDate: action.dateFrom,
-            }
+            },
           },
         },
       };
@@ -145,6 +151,40 @@ function reducer(state: State, action: Action): State {
       };
 
     case "UPDATE_VIEW":
+      const newCurrentDate = new Date(state.globalMinDate);
+
+      if (action.view === "weekly") {
+        const day = newCurrentDate.getDay();
+
+        // set to monday before current date
+        switch (day) {
+          case 0: // sunday
+            newCurrentDate.setDate(newCurrentDate.getDate() - 6);
+            break;
+          case 1: // monday
+            break;
+          case 2: // tuesday
+            newCurrentDate.setDate(newCurrentDate.getDate() - 1);
+            break;
+          case 3: // wednesday
+            newCurrentDate.setDate(newCurrentDate.getDate() - 2);
+            break;
+          case 4: // thursday
+            newCurrentDate.setDate(newCurrentDate.getDate() - 3);
+            break;
+          case 5: // friday
+            newCurrentDate.setDate(newCurrentDate.getDate() - 4);
+            break;
+          case 6: // saturday
+            newCurrentDate.setDate(newCurrentDate.getDate() - 5);
+            break;
+        }
+      }
+
+      if (action.view === "monthly") {
+        newCurrentDate.setDate(1);
+      }
+
       return {
         ...state,
         segmentData: {
@@ -157,12 +197,15 @@ function reducer(state: State, action: Action): State {
             selectedDateTo: state.globalMaxDate,
             view: action.view,
             mainChart: {
-              currentDate: state.globalMinDate,
+              currentDate: newCurrentDate,
             },
           },
         },
       };
     case "UPDATE_CURRENT_DATE":
+      const currentDate = new Date(action.currentDate);
+      currentDate.setHours(0, 0, 0, 0);
+
       return {
         ...state,
         segmentData: {
@@ -171,7 +214,7 @@ function reducer(state: State, action: Action): State {
             ...state.segmentData[action.segment],
             mainChart: {
               ...state.segmentData[action.segment].mainChart,
-              currentDate: action.currentDate,
+              currentDate,
             },
           },
         },

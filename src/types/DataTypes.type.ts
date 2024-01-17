@@ -12,10 +12,12 @@ type RecordType = {
   data: DataType[];
 };
 
+type WeekdayType = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
 type SegmentType = "totalCalls" | "averageCallAmount";
 
 type SortType = "desc" | "asc" | "alpha";
 
 type ViewType = "monthly" | "daily" | "weekly" | "yearly";
 
-export type { RecordType, DataType, SegmentType, SortType, ViewType };
+export type { RecordType, DataType, SegmentType, SortType, ViewType, WeekdayType };

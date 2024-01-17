@@ -1,8 +1,9 @@
-import { useDataDispatch, useDataState } from "src/context/data.context";
-import { formatDate, getDayData } from "src/helpers/date";
+import { useDataState } from "src/context/data.context";
+import { formatDate } from "src/helpers/date";
 import { SegmentType } from "src/types/DataTypes.type";
 import { useChart } from "./use-chart.hook";
 import { useFilters } from "src/components/filters/use-filters.hook";
+import { getDayData, getMonthData, getWeekData, getYearData } from "src/helpers/data";
 
 const dailyViewChartLabels = [
   "06:00",
@@ -50,7 +51,6 @@ const yearlyViewChartLabels = [
 
 function useMainChart() {
   const { segmentData } = useDataState();
-  const dispatch = useDataDispatch();
   const { chartColors } = useChart();
   const { getFilteredData } = useFilters();
 
@@ -62,12 +62,10 @@ function useMainChart() {
         return dailyViewChartLabels;
       case "weekly":
         return weeklyViewChartLabels;
-
       case "monthly":
         return monthLabels;
       case "yearly":
         return yearlyViewChartLabels;
-
       default:
         return dailyViewChartLabels;
     }
@@ -76,7 +74,6 @@ function useMainChart() {
   const getChartTitle = (segment: SegmentType) => {
     const d = segmentData[segment].mainChart.currentDate;
     const view = segmentData[segment].view;
-    const { getFilteredData } = useFilters();
 
     switch (view) {
       case "daily":
@@ -84,6 +81,7 @@ function useMainChart() {
         const specificDate = formatDate(d);
 
         // sunday is 0, but we want it to be 6
+
         const dayNumber = day === 0 ? 6 : day - 1;
         return `${weeklyViewChartLabels[dayNumber]} (${specificDate})`;
 
@@ -108,174 +106,6 @@ function useMainChart() {
 
       default:
         return null;
-    }
-  };
-
-  const handleNextButtonClick = (segment: SegmentType) => {
-    const view = segmentData[segment].view;
-    const currentDate = segmentData[segment].mainChart.currentDate;
-
-    switch (view) {
-      case "daily":
-        const tomorrow = new Date(currentDate);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-
-        return dispatch({
-          type: "UPDATE_CURRENT_DATE",
-          segment,
-          currentDate: tomorrow,
-        });
-
-      case "weekly":
-        const nextWeek = new Date(currentDate);
-        nextWeek.setDate(nextWeek.getDate() + 7);
-
-        return dispatch({
-          type: "UPDATE_CURRENT_DATE",
-          segment,
-          currentDate: nextWeek,
-        });
-
-      case "monthly":
-        const nextMonth = new Date(currentDate);
-        nextMonth.setMonth(nextMonth.getMonth() + 1);
-
-        return dispatch({
-          type: "UPDATE_CURRENT_DATE",
-          segment,
-          currentDate: nextMonth,
-        });
-
-      case "yearly":
-        const nextYear = new Date(currentDate);
-        nextYear.setFullYear(nextYear.getFullYear() + 1);
-
-        return dispatch({
-          type: "UPDATE_CURRENT_DATE",
-          segment,
-          currentDate: nextYear,
-        });
-    }
-  };
-
-  const handlePrevButtonClick = (segment: SegmentType) => {
-    const view = segmentData[segment].view;
-    const currentDate = segmentData[segment].mainChart.currentDate;
-
-    switch (view) {
-      case "daily":
-        const yesterday = new Date(currentDate);
-        yesterday.setDate(yesterday.getDate() - 1);
-
-        return dispatch({
-          type: "UPDATE_CURRENT_DATE",
-          segment,
-          currentDate: yesterday,
-        });
-
-      case "weekly":
-        const prevWeek = new Date(currentDate);
-        prevWeek.setDate(prevWeek.getDate() - 7);
-
-        return dispatch({
-          type: "UPDATE_CURRENT_DATE",
-          segment,
-          currentDate: prevWeek,
-        });
-
-      case "monthly":
-        const prevMonth = new Date(currentDate);
-        prevMonth.setMonth(prevMonth.getMonth() - 1);
-
-        return dispatch({
-          type: "UPDATE_CURRENT_DATE",
-          segment,
-          currentDate: prevMonth,
-        });
-
-      case "yearly":
-        const prevYear = new Date(currentDate);
-        prevYear.setFullYear(prevYear.getFullYear() - 1);
-
-        return dispatch({
-          type: "UPDATE_CURRENT_DATE",
-          segment,
-          currentDate: prevYear,
-        });
-    }
-  };
-
-  const prevButtonDisabled = (segment: SegmentType) => {
-    const view = segmentData[segment].view;
-    const currentDate = segmentData[segment].mainChart.currentDate;
-    const minDate = segmentData[segment].dateFrom;
-
-    switch (view) {
-      case "daily":
-        const yesterday = new Date(currentDate);
-        yesterday.setDate(yesterday.getDate() - 1);
-
-        return yesterday < minDate;
-
-      case "weekly":
-        const prevWeek = new Date(currentDate);
-        prevWeek.setDate(prevWeek.getDate() - 7);
-
-        return prevWeek < minDate;
-
-      case "monthly":
-        const d = new Date(currentDate);
-        d.setMonth(d.getMonth() - 1);
-
-        const prevMonth = d.getMonth();
-        const minMonth = minDate.getMonth();
-
-        return prevMonth < minMonth;
-
-      case "yearly":
-        const prevYear = new Date(currentDate);
-        prevYear.setFullYear(prevYear.getFullYear() - 1);
-
-        const minYear = minDate.getFullYear();
-
-        return prevYear.getFullYear() < minYear;
-    }
-  };
-
-  const nextButtonDisabled = (segment: SegmentType) => {
-    const view = segmentData[segment].view;
-    const currentDate = segmentData[segment].mainChart.currentDate;
-    const maxDate = segmentData[segment].dateTo;
-
-    switch (view) {
-      case "daily":
-        const tomorrow = new Date(currentDate);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-
-        return tomorrow > maxDate;
-
-      case "weekly":
-        const nextWeek = new Date(currentDate);
-        nextWeek.setDate(nextWeek.getDate() + 7);
-
-        return nextWeek > maxDate;
-
-      case "monthly":
-        const d = new Date(currentDate);
-        d.setMonth(d.getMonth() + 1);
-
-        const nextMonth = d.getMonth();
-        const maxMonth = maxDate.getMonth();
-
-        return nextMonth > maxMonth;
-
-      case "yearly":
-        const nextYear = new Date(currentDate);
-        nextYear.setFullYear(nextYear.getFullYear() + 1);
-
-        const maxYear = maxDate.getFullYear();
-
-        return nextYear.getFullYear() > maxYear;
     }
   };
 
@@ -308,7 +138,7 @@ function useMainChart() {
       const currentDayData = getDayData(currentDate, data);
 
       const datasets: number[][] = currentDayData.map((item) => {
-        const itemArray: number[] = [
+        const amountPerHourView = [
           0, //06:00
           0, //07:00
           0, //08:00
@@ -325,32 +155,147 @@ function useMainChart() {
           0, //19:00
         ];
 
-        item.data.map((item) => {
-          if (item.date) {
-            const itemHour = new Date(item.date).getHours();
+        if (segment === "totalCalls") {
+          item.data.map((item) => {
+            if (item.date) {
+              const itemHour = new Date(item.date).getHours();
 
-            if (itemHour >= 6 && itemHour <= 19) {
-              itemArray[itemHour - 6] += 1;
+              if (itemHour >= 6 && itemHour <= 19) {
+                amountPerHourView[itemHour - 6] += 1;
+              }
             }
-          }
-        });
+          });
+        }
 
-        return itemArray;
+        return amountPerHourView;
       });
 
       return datasets;
     }
 
     if (view === "weekly") {
-      //TODO
+      const weekData = getWeekData(currentDate, data);
+
+      //@ts-ignore
+      const datasets: number[][] = weekData.map((item) => {
+        const amountPerDayView: number[] = [
+          0, //monday
+          0, //tuesday
+          0, //wednesday
+          0, //thursday
+          0, //friday
+          0, //saturday
+          0, //sunday
+        ];
+
+        if (segment === "totalCalls") {
+          item.data.map((item) => {
+            if (item.date) {
+              const itemDay = new Date(item.date).getDay();
+
+              // sunday is 0, but we want it to be 6
+              if (itemDay === 0) {
+                amountPerDayView[6] += 1;
+                return;
+              }
+
+              amountPerDayView[itemDay - 1] += 1;
+            }
+          });
+
+          return amountPerDayView;
+        }
+      });
+
+      return datasets;
     }
 
     if (view === "monthly") {
-      //TODO
+      const currentMonthData = getMonthData(currentDate, data);
+
+      //@ts-ignore
+      const datasets: number[][] = currentMonthData.map((item) => {
+        const amountPerWeekView: number[] = [
+          0, //"01-07",
+          0, //"08-14",
+          0, //"15-21",
+          0, //"22-28",
+          0, //"29-31",
+        ];
+
+        if (segment === "totalCalls") {
+          item.data.map((item) => {
+            if (item.date) {
+              const itemDay = new Date(item.date).getDate();
+
+              if (itemDay >= 1 && itemDay <= 7) {
+                amountPerWeekView[0] += 1;
+                return;
+              }
+
+              if (itemDay >= 8 && itemDay <= 14) {
+                amountPerWeekView[1] += 1;
+                return;
+              }
+
+              if (itemDay >= 15 && itemDay <= 21) {
+                amountPerWeekView[2] += 1;
+                return;
+              }
+
+              if (itemDay >= 22 && itemDay <= 28) {
+                amountPerWeekView[3] += 1;
+                return;
+              }
+
+              if (itemDay >= 29 && itemDay <= 31) {
+                amountPerWeekView[4] += 1;
+                return;
+              }
+            }
+          });
+
+          return amountPerWeekView;
+        }
+      });
+
+      return datasets;
     }
 
     if (view === "yearly") {
-      //TODO
+      const currentYearData = getYearData(currentDate, data);
+
+      //@ts-ignore
+      const datasets: number[][] = currentYearData.map((item) => {
+        const amountPerMonthView: number[] = [
+          0, //January
+          0, //February
+          0, //March
+          0, //April
+          0, //May
+          0, //June
+          0, //July
+          0, //August
+          0, //September
+          0, //October
+          0, //November
+          0, //December
+        ];
+
+        if (segment === "totalCalls") {
+          item.data.map((item) => {
+            if (item.date) {
+              const itemMonth = new Date(item.date).getMonth();
+
+              amountPerMonthView[itemMonth] += 1;
+            }
+          });
+
+          return amountPerMonthView;
+        }
+      });
+
+      return datasets;
     }
 
     return [];
@@ -359,10 +304,6 @@ function useMainChart() {
   return {
     getLabels,
     getChartTitle,
-    handlePrevButtonClick,
-    handleNextButtonClick,
-    prevButtonDisabled,
-    nextButtonDisabled,
     getMainChartData,
     getMainChartDatasets,
   };

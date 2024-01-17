@@ -9,21 +9,21 @@ import {
   ArrowLeft as ArrowLeftIcon,
   ArrowRight as ArrowRightIcon,
 } from "@carbon/icons-react";
+import { useChartNavigation } from "src/hooks/use-chart-navigation.hook";
 
 const MainChart = () => {
   const { mainChartData } = useTotalCalls();
   const { mainChartOptions } = useChart();
+  const { getChartTitle } = useMainChart();
   const {
-    getChartTitle,
     handleNextButtonClick,
     handlePrevButtonClick,
-    prevButtonDisabled,
     nextButtonDisabled,
-  } = useMainChart();
-
+    prevButtonDisabled,
+  } = useChartNavigation();
   const chartTitle = getChartTitle("totalCalls");
   const prevBtnDisabled = prevButtonDisabled("totalCalls");
-
+  const nextBtnDisabled = nextButtonDisabled("totalCalls");
   return (
     <div className={styles.mainChartWrapper}>
       <h3 className={styles.mainChartTitle}>{chartTitle}</h3>
@@ -42,7 +42,7 @@ const MainChart = () => {
         <button
           className={styles.arrowBtn}
           onClick={() => handleNextButtonClick("totalCalls")}
-          disabled={nextButtonDisabled("totalCalls")}
+          disabled={nextBtnDisabled}
         >
           <ArrowRightIcon />
         </button>
@@ -78,9 +78,9 @@ const TotalCallsSection = () => {
   const { summaryData } = useTotalCalls();
   const { dateFrom, dateTo, view } = state.segmentData.totalCalls;
 
-  if (summaryData.length === 0) {
-    return <h3 className={styles.noData}>Brak danych do wyświetlenia</h3>;
-  }
+  // if (summaryData.length === 0) {
+  //   return <h3 className={styles.noData}>Brak danych do wyświetlenia</h3>;
+  // }
 
   return (
     <>

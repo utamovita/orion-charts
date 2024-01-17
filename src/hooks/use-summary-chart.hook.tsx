@@ -1,8 +1,9 @@
 import { useDataState } from "src/context/data.context";
 import { useChart } from "./use-chart.hook";
-import { RecordType, SegmentType } from "src/types/DataTypes.type";
-import { getDayData } from "src/helpers/date";
+import { SegmentType } from "src/types/DataTypes.type";
+
 import { useFilters } from "src/components/filters/use-filters.hook";
+import { getDayData, getMonthData, getWeekData, getYearData } from "src/helpers/data";
 
 type SummaryDataType = Array<{
   name: string;
@@ -38,15 +39,42 @@ function useSummaryChart() {
     }
 
     if (view === "weekly") {
-      //TODO
+      const currentWeekData = getWeekData(currentDate, data);
+
+      if (segment === "totalCalls") {
+        currentWeekData.map((item) => {
+          summaryData.push({
+            name: item.name,
+            amount: item.data.length,
+          });
+        });
+      }
     }
 
     if (view === "monthly") {
-      //TODO
+      const currentMonthData = getMonthData(currentDate, data);
+
+      if (segment === "totalCalls") {
+        currentMonthData.map((item) => {
+          summaryData.push({
+            name: item.name,
+            amount: item.data.length,
+          });
+        });
+      }
     }
 
     if (view === "yearly") {
-      //TODO
+      const currentYearData = getYearData(currentDate, data);
+
+      if (segment === "totalCalls") {
+        currentYearData.map((item) => {
+          summaryData.push({
+            name: item.name,
+            amount: item.data.length,
+          });
+        });
+      }
     }
 
     if (sort === "desc") {
@@ -96,15 +124,39 @@ function useSummaryChart() {
     }
 
     if (view === "weekly") {
-      //TODO
+      const currentWeekData = getWeekData(currentDate, data);
+
+      if (segment === "totalCalls") {
+        const datasets: number[] = currentWeekData.map((item) => {
+          return item.data.length;
+        });
+
+        return datasets;
+      }
     }
 
     if (view === "monthly") {
-      //TODO
+      const currentMonthData = getMonthData(currentDate, data);
+
+      if (segment === "totalCalls") {
+        const datasets: number[] = currentMonthData.map((item) => {
+          return item.data.length;
+        });
+
+        return datasets;
+      }
     }
 
     if (view === "yearly") {
-      //TODO
+      const currentYearData = getYearData(currentDate, data);
+
+      if (segment === "totalCalls") {
+        const datasets: number[] = currentYearData.map((item) => {
+          return item.data.length;
+        });
+
+        return datasets;
+      }
     }
 
     return [];
