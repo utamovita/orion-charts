@@ -1,13 +1,11 @@
-import { Bar } from "react-chartjs-2";
-import { useChart } from "../../../hooks/use-chart.hook";
-import { useAverageCallAmount } from "./use-average-call-amount.hook";
-import { ChartHeader } from "../charts.component";
 import { useDataState } from "src/context/data.context";
+import { ChartHeader } from "../../charts.component";
+import { MainChart } from "../../main-chart/main-chart.component";
+import { Summary } from "../../summary-chart/summary-chart.component";
+
 
 const AverageCallAmount = () => {
   const state = useDataState();
-  const { chartOptions } = useChart();
-  const { chartData } = useAverageCallAmount();
   const { dateFrom, dateTo, view } = state.segmentData.averageCallAmount;
 
   return (
@@ -19,7 +17,8 @@ const AverageCallAmount = () => {
         segmentDateTo={dateTo}
         view={view}
       />
-      <Bar options={chartOptions} data={chartData} />
+      <MainChart segment="averageCallAmount"/>
+      <Summary segment="averageCallAmount"/>
     </>
   );
 };

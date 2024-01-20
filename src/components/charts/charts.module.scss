@@ -28,13 +28,6 @@
   margin-bottom: vr.$spacingSize60;
 }
 
-.actionBar {
-  display: flex;
-  flex-direction: column;
-  align-items: end;
-  gap: vr.$spacingSize30;
-}
-
 .actionButton {
   font-weight: bold;
   display: flex;

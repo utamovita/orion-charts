@@ -1,6 +1,6 @@
 import { useDataState } from "../../context/data.context";
-import { AverageCallAmount } from "./average-call-amount/average-call-amount";
-import { TotalCallsSection } from "./total-calls/total-calls.component";
+import { AverageCallAmount } from "./variety/average-call-amount/average-call-amount.component";
+import { TotalCallsSection } from "./variety/total-calls/total-calls.component";
 import { Calendar as CalendarIcon } from "@carbon/icons-react";
 import { FilterButton } from "../filters/filters.component";
 import { SegmentType, ViewType } from "src/types/DataTypes.type";
@@ -74,7 +74,7 @@ const Section = ({ children }: SectionProps) => {
 const Charts = () => {
   const state = useDataState();
 
-  const { globalData, segmentData } = state;
+  const { globalData } = state;
 
   if (globalData.length === 0) {
     return null;

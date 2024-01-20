@@ -1,0 +1,33 @@
+@use "src/styles/utilities/_variables" as vr;
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  justify-content: center;
+  padding: 50px;
+}
+
+.doughnutWrapper {
+  max-width: 500px;
+}
+
+.list {
+  counter-reset: my-awesome-counter;
+}
+
+.element {
+  display: flex;
+  align-items: center;
+  counter-increment: my-awesome-counter;
+  gap: 4px;
+  &::before {
+    content: counter(my-awesome-counter) " -";
+    display: flex;
+    margin-right: var(--spacingSize10);
+  }
+}
+
+.elementAmount {
+  font-weight: bold;
+}

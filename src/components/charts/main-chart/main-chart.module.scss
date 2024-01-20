@@ -1,0 +1,43 @@
+@use "src/styles/utilities/_variables" as vr;
+
+.chart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
+.arrowBtn {
+  width: 50px;
+  min-width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid var(--colorTextGray);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: var(--boxShadow);
+  transition: all 0.15s ease-in-out;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):hover {
+    cursor: pointer;
+    scale: 1.1;
+  }
+}
+
+.middle {
+  width: 100%;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: vr.$spacingSize20;
+  text-align: center;
+  color: var(--colorTextGray);
+}
