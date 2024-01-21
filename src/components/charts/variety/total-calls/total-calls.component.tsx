@@ -10,14 +10,17 @@ const TotalCallsSection = () => {
   return (
     <>
       <ChartHeader
-        title="Łączna ilość połączeń"
+        title="Ilość połączeń"
         segment="totalCalls"
         segmentDateFrom={dateFrom}
         segmentDateTo={dateTo}
         view={view}
       />
       <MainChart segment="totalCalls"/>
-      <Summary segment="totalCalls"/>
+      <div style={{display: "Flex", justifyContent: "space-between"}}>
+        <Summary segment="totalCalls" title="Łączna ilość połączeń"/>
+        <Summary segment="totalCalls" title="Średnia ilość połączeń" average={true}/>
+      </div>
     </>
   );
 };

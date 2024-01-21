@@ -14,10 +14,16 @@ type RecordType = {
 
 type WeekdayType = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
-type SegmentType = "totalCalls" | "averageCallAmount";
+type SegmentType = "totalCalls" | "averageCallTime";
 
 type SortType = "desc" | "asc" | "alpha";
 
 type ViewType = "monthly" | "daily" | "weekly" | "yearly";
 
-export type { RecordType, DataType, SegmentType, SortType, ViewType, WeekdayType };
+type SummaryDataListType = Array<{
+  name: string;
+  amount: number;
+  color: string;
+}>
+
+export type { RecordType, DataType, SegmentType, SortType, ViewType, WeekdayType, SummaryDataListType };

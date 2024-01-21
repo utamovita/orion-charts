@@ -1,13 +1,19 @@
 @use "src/styles/utilities/_variables" as vr;
 
-.wrapper {
+
+.title {
+  text-align: center;
+  font-size: 22px;
+  color: var(--colorTextGray);
+  margin: vr.$spacingSize50 0;
+}
+.summary {
   display: flex;
   align-items: center;
   gap: 50px;
   justify-content: center;
-  padding: 50px;
+  padding: 0 vr.$spacingSize60 vr.$spacingSize50;
 }
-
 .doughnutWrapper {
   max-width: 500px;
 }

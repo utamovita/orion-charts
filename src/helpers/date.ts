@@ -34,5 +34,34 @@ const sumDatesByData = (data: RecordType[]) => {
   return allDates;
 };
 
+function daysInMonth(month: number, year: number) {
+  return new Date(year, month, 0).getDate();
+}
 
-export { formatDate, getDateRange, sumDatesByData };
+function isWeekday(y: number, m: number, d: number) {
+  const day = new Date(y, m, d).getDay();
+  return day != 0 && day != 6;
+}
+
+function getWeekdaysInMonth(date: Date) {
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  const days = daysInMonth(month, year);
+
+  let weekdays = 0;
+
+  for (var i = 0; i < days; i++) {
+    if (isWeekday(year, month, i + 1))
+      weekdays++;
+  }
+
+  return weekdays;
+}
+
+const workingHoursAmount = 8;
+const workingDaysAmount = 5;
+const averageWeeksAmount = 4.34;
+const monthsAmount = 12;
+
+export { formatDate, getDateRange, sumDatesByData, getWeekdaysInMonth, workingHoursAmount, workingDaysAmount, averageWeeksAmount, monthsAmount };

@@ -1,5 +1,4 @@
 import { useDataState } from "../../context/data.context";
-import { AverageCallAmount } from "./variety/average-call-amount/average-call-amount.component";
 import { TotalCallsSection } from "./variety/total-calls/total-calls.component";
 import { Calendar as CalendarIcon } from "@carbon/icons-react";
 import { FilterButton } from "../filters/filters.component";
@@ -8,6 +7,7 @@ import { formatDate } from "src/helpers/date";
 import { useChart } from "src/hooks/use-chart.hook";
 import { Container } from "../shared/container/container.component";
 import styles from "./charts.module.scss";
+import { AverageCallTime } from "./variety/average-call-time/average-call-time.component";
 
 type ChartHeaderProps = {
   title: string;
@@ -76,6 +76,8 @@ const Charts = () => {
 
   const { globalData } = state;
 
+  console.log("render charts");
+
   if (globalData.length === 0) {
     return null;
   }
@@ -86,10 +88,10 @@ const Charts = () => {
       <Section>
         <TotalCallsSection />
       </Section>
-      <Section>
-        <AverageCallAmount />
-      </Section>
-      {/* <Section title="Średni c  zas trwania rozmowy (sekundy)">
+      {/* <Section>
+        <AverageCallTime />
+      </Section> */}
+      {/* <Section title="Średni czas trwania rozmowy (sekundy)">
         <Sample1 />
       </Section>
       <Section title="Kontrahenci">

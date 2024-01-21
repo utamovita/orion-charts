@@ -31,6 +31,7 @@ ChartJS.register(
 );
 
 function App() {
+
   return (
     <DataProvider>
       <ModalProvider>

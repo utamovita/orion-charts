@@ -3,6 +3,7 @@ import {
   RecordType,
   SegmentType,
   SortType,
+  SummaryDataListType,
   ViewType,
 } from "../types/DataTypes.type";
 import { getDateRange, sumDatesByData } from "src/helpers/date";
@@ -24,6 +25,7 @@ type State = {
       mainChart: {
         currentDate: Date;
       };
+      summaryData: SummaryDataListType;
     };
   };
 };
@@ -63,7 +65,13 @@ type Action =
     type: "UPDATE_CURRENT_DATE";
     currentDate: Date;
     segment: SegmentType;
+  }
+  | {
+    type: "UPDATE_SUMMARY_LIST_DATA";
+    summaryListData: SummaryDataListType;
+    segment: SegmentType;
   };
+
 
 type Dispatch = (action: Action) => void;
 
@@ -96,11 +104,12 @@ function reducer(state: State, action: Action): State {
         mainChart: {
           currentDate: minDate,
         },
+        summaryData: [] as SummaryDataListType,
       } as const;
 
       const updatedSegmentData = {
         totalCalls: defaultValues,
-        averageCallAmount: defaultValues,
+        averageCallTime: defaultValues,
       };
 
       const uniqueNames = getUniqueNames(action.data);
@@ -236,6 +245,18 @@ function reducer(state: State, action: Action): State {
         filterSelection: [...state.filterSelection, action.name],
       };
 
+    case "UPDATE_SUMMARY_LIST_DATA":
+      return {
+        ...state,
+        segmentData: {
+          ...state.segmentData,
+          [action.segment]: {
+            ...state.segmentData[action.segment],
+            summaryData: action.summaryListData,
+          },
+        },
+      };
+
     default:
       throw new Error();
   }
@@ -255,6 +276,7 @@ const DataProvider = ({ children }: DataProviderProps) => {
     mainChart: {
       currentDate: new Date(),
     },
+    summaryData: [] as SummaryDataListType,
   } as const;
 
   const defaultState: State = {
@@ -265,7 +287,7 @@ const DataProvider = ({ children }: DataProviderProps) => {
     filterSelection: [],
     segmentData: {
       totalCalls: defaultSegmentValues,
-      averageCallAmount: defaultSegmentValues,
+      averageCallTime: defaultSegmentValues,
     },
   };
 

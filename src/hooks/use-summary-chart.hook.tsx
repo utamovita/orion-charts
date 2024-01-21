@@ -1,11 +1,10 @@
-import { useDataState } from "src/context/data.context";
+import { useDataDispatch, useDataState } from "src/context/data.context";
 import { useChart } from "./use-chart.hook";
-import { SegmentType } from "src/types/DataTypes.type";
+import { SegmentType, SummaryDataListType } from "src/types/DataTypes.type";
+import { useTotalCalls } from "src/components/charts/variety/total-calls/use-total-calls.hook";
+import { useAverageCallTime } from "src/components/charts/variety/average-call-time/use-average-call-time.hook";
 
-import { useFilters } from "src/components/filters/use-filters.hook";
-import { getDayData, getMonthData, getWeekData, getYearData } from "src/helpers/data";
-
-type SummaryDataType = Array<{
+export type SummaryDataType = Array<{
   name: string;
   amount: number;
 }>;
@@ -14,67 +13,23 @@ function useSummaryChart() {
   const state = useDataState();
   const { sort } = state;
   const { chartColors } = useChart();
-  const { segmentData } = useDataState();
-  const { getFilteredData } = useFilters();
+  const { getTotalCallsSummaryListData, getTotalCallsSummaryDatasets } = useTotalCalls();
+  const { getAverageCallTimeSummaryDatasets, getAverageCallTimeSummaryListData } = useAverageCallTime();
+  const dispatch = useDataDispatch();
 
-  const getSummaryListData = (segment: SegmentType) => {
-    const view = segmentData[segment].view;
-    const currentDate = segmentData[segment].mainChart.currentDate;
-    const dateFrom = segmentData[segment].dateFrom;
-    const dateTo = segmentData[segment].dateTo;
-    const data = getFilteredData(dateFrom, dateTo);
+  const getSummaryListData = (segment: SegmentType, average: boolean) => {
     const summaryData = [] as SummaryDataType;
 
-    if (view === "daily") {
-      const currentDayData = getDayData(currentDate, data);
+    if (segment === "totalCalls") {
+      const data = getTotalCallsSummaryListData(average);
 
-      if (segment === "totalCalls") {
-        currentDayData.map((item) => {
-          summaryData.push({
-            name: item.name,
-            amount: item.data.length,
-          });
-        });
-      }
+      summaryData.push(...data);
     }
 
-    if (view === "weekly") {
-      const currentWeekData = getWeekData(currentDate, data);
+    if(segment === "averageCallTime") {
+      const data = getAverageCallTimeSummaryListData();
 
-      if (segment === "totalCalls") {
-        currentWeekData.map((item) => {
-          summaryData.push({
-            name: item.name,
-            amount: item.data.length,
-          });
-        });
-      }
-    }
-
-    if (view === "monthly") {
-      const currentMonthData = getMonthData(currentDate, data);
-
-      if (segment === "totalCalls") {
-        currentMonthData.map((item) => {
-          summaryData.push({
-            name: item.name,
-            amount: item.data.length,
-          });
-        });
-      }
-    }
-
-    if (view === "yearly") {
-      const currentYearData = getYearData(currentDate, data);
-
-      if (segment === "totalCalls") {
-        currentYearData.map((item) => {
-          summaryData.push({
-            name: item.name,
-            amount: item.data.length,
-          });
-        });
-      }
+      summaryData.push(...data);
     }
 
     if (sort === "desc") {
@@ -92,7 +47,19 @@ function useSummaryChart() {
     return summaryData;
   };
 
-  const getSummaryChartData = (labels: string[], datasets: number[]) => {
+  const getSummaryChartData = (labels: string[], datasets: number[], segment: SegmentType) => {
+    const summaryListData: SummaryDataListType = datasets.map((datasetAmount, index) => ({
+      name: labels[index],
+      amount: datasetAmount,
+      color: chartColors[index],
+    }));
+
+    // dispatch({
+    //   type: "UPDATE_SUMMARY_LIST_DATA",
+    //   summaryListData,
+    //   segment,
+    // });
+
     return {
       labels,
       datasets: [
@@ -104,59 +71,17 @@ function useSummaryChart() {
     };
   };
 
-  const getSummaryChartDatasets = (segment: SegmentType) => {
-    const view = segmentData[segment].view;
-    const currentDate = segmentData[segment].mainChart.currentDate;
-    const dateFrom = segmentData[segment].dateFrom;
-    const dateTo = segmentData[segment].dateTo;
-    const data = getFilteredData(dateFrom, dateTo);
+  const getSummaryChartDatasets = (segment: SegmentType, average: boolean) => {
+    if (segment === "totalCalls") {
+      const datasets = getTotalCallsSummaryDatasets(average);
 
-    if (view === "daily") {
-      const currentDayData = getDayData(currentDate, data);
-
-      if (segment === "totalCalls") {
-        const datasets: number[] = currentDayData.map((item) => {
-          return item.data.length;
-        });
-
-        return datasets;
-      }
+      return datasets;
     }
 
-    if (view === "weekly") {
-      const currentWeekData = getWeekData(currentDate, data);
+    if (segment === "averageCallTime") {
+      const datasets = getAverageCallTimeSummaryDatasets();
 
-      if (segment === "totalCalls") {
-        const datasets: number[] = currentWeekData.map((item) => {
-          return item.data.length;
-        });
-
-        return datasets;
-      }
-    }
-
-    if (view === "monthly") {
-      const currentMonthData = getMonthData(currentDate, data);
-
-      if (segment === "totalCalls") {
-        const datasets: number[] = currentMonthData.map((item) => {
-          return item.data.length;
-        });
-
-        return datasets;
-      }
-    }
-
-    if (view === "yearly") {
-      const currentYearData = getYearData(currentDate, data);
-
-      if (segment === "totalCalls") {
-        const datasets: number[] = currentYearData.map((item) => {
-          return item.data.length;
-        });
-
-        return datasets;
-      }
+      return datasets;
     }
 
     return [];

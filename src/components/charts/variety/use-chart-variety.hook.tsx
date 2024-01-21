@@ -2,9 +2,9 @@ import { useFilters } from "src/components/filters/use-filters.hook";
 import { useDataState } from "src/context/data.context";
 import { useMainChart } from "src/hooks/use-main-chart.hook";
 import { useSummaryChart } from "src/hooks/use-summary-chart.hook";
-import { RecordType, SegmentType } from "src/types/DataTypes.type";
+import { RecordType, SegmentType, SummaryDataListType } from "src/types/DataTypes.type";
 
-export function useChartVariety(segment: SegmentType) {
+export function useChartVariety(segment: SegmentType, average: boolean = false) {
   const { dateFrom, dateTo } = useDataState().segmentData[segment];
   const { getSummaryListData, getSummaryChartData, getSummaryChartDatasets } =
     useSummaryChart();
@@ -22,16 +22,19 @@ export function useChartVariety(segment: SegmentType) {
     mainChartDatasets
   );
 
-  const summaryData = getSummaryListData(segment);
-  const summaryChartDatasets = getSummaryChartDatasets(segment);
+  const summaryListData = getSummaryListData(segment, average);
+  const summaryChartDatasets = getSummaryChartDatasets(segment, average);
   const summaryChartData = getSummaryChartData(
     labelNames,
-    summaryChartDatasets
+    summaryChartDatasets,
+    segment
   );
+
+  console.log(segment, average);
 
   return {
     mainChartData,
     summaryChartData,
-    summaryData,
+    summaryListData,
   };
 }
