@@ -1,5 +1,4 @@
-@use "src/styles/utilities/_variables" as vr;
-
+@use 'src/styles/utilities/_variables' as vr;
 
 .title {
   text-align: center;
@@ -7,6 +6,7 @@
   color: var(--colorTextGray);
   margin: vr.$spacingSize50 0;
 }
+
 .summary {
   display: flex;
   align-items: center;
@@ -17,6 +17,10 @@
 
 .doughnutWrapper {
   max-width: 500px;
+
+  &.small {
+    max-width: 200px;
+  }
 }
 
 .list {
@@ -36,6 +40,23 @@
   margin-right: vr.$spacingSize20;
 }
 
+.elementName {
+  white-space: nowrap;
+}
 .elementAmount {
   font-weight: bold;
+}
+
+.noResults {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.noResultsTitle {
+  font-size: 22px;
+  color: var(--colorTextGray);
+  margin: vr.$spacingSize100 0;
+  text-align: center;
 }

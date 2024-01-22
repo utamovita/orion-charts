@@ -12,7 +12,7 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint", "react"],
+  "plugins": ["@typescript-eslint", "react", "react-hooks"],
   "settings": {
     "react": {
       "version": "detect"
@@ -61,7 +61,9 @@
         "ignoreCase": true,
         "ignoreDeclarationSort": true
       }
-    ]
+    ],
+    "react-hooks/rules-of-hooks": "error", // For checking rules of hooks
+    "react-hooks/exhaustive-deps": "warn" // For checking hook dependencies 
   },
   "overrides": [
     {

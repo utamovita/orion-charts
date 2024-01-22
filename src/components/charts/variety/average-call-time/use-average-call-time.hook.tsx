@@ -198,7 +198,7 @@ function useAverageCallTime() {
 
         const sumWeekAverage = filteredAveragePerDay.reduce((a, b) => a + b, 0);
 
-        return datasets[itemIndex] = sumWeekAverage / filteredAveragePerDay.length;
+        return datasets[itemIndex] = roundToTwo(sumWeekAverage / filteredAveragePerDay.length);
       });
 
 

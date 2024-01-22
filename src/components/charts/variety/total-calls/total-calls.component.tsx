@@ -7,6 +7,7 @@ const TotalCallsSection = () => {
   const state = useDataState();
   const { dateFrom, dateTo, view } = state.segmentData.totalCalls;
 
+
   return (
     <>
       <ChartHeader
@@ -16,10 +17,10 @@ const TotalCallsSection = () => {
         segmentDateTo={dateTo}
         view={view}
       />
-      <MainChart segment="totalCalls"/>
-      <div style={{display: "Flex", justifyContent: "space-between"}}>
-        <Summary segment="totalCalls" title="Łączna ilość połączeń"/>
-        {/* <Summary segment="totalCalls" title="Średnia ilość połączeń" average={true}/> */}
+      <MainChart segment="totalCalls" />
+      <div style={{ display: "Flex", justifyContent: "space-between" }}>
+        <Summary segment="totalCalls" title="Łączna ilość połączeń" variant="small" />
+        <Summary segment="totalCalls" title="Średnia ilość połączeń" average={true} variant="small" />
       </div>
     </>
   );

@@ -86,9 +86,9 @@ const Charts = () => {
       <Section>
         <TotalCallsSection />
       </Section>
-      {/* <Section>
+      <Section>
         <AverageCallTime />
-      </Section> */}
+      </Section>
       {/* <Section title="Średni czas trwania rozmowy (sekundy)">
         <Sample1 />
       </Section>

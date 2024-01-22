@@ -55,6 +55,8 @@ function useMainChart(segment: SegmentType) {
   const { chartColors } = useChart();
   const { getFilteredData } = useFilters();
   const { dateFrom, dateTo } = useDataState().segmentData[segment];
+  const { getTotalCallsMainChartDatasets } = useTotalCalls();
+  const { getAverageCallTimeDatasets } = useAverageCallTime();
 
   const getLabels = () => {
     const view = segmentData[segment].view;
@@ -130,8 +132,6 @@ function useMainChart(segment: SegmentType) {
   };
 
   const getMainChartDatasets = () => {
-    const { getTotalCallsMainChartDatasets } = useTotalCalls()
-    const { getAverageCallTimeDatasets } = useAverageCallTime();
 
     if (segment === "totalCalls") {
       const datasets = getTotalCallsMainChartDatasets();
