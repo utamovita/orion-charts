@@ -1,4 +1,4 @@
-import React, { useReducer, useContext } from 'react';
+import React, { useContext, useReducer } from "react";
 
 type PayloadTypes = null | string | React.ReactNode;
 
@@ -9,14 +9,14 @@ type State = {
 
 type Action =
   | {
-      type: 'SHOW';
-      payload: {
-        content: PayloadTypes;
-      };
-    }
-  | {
-      type: 'HIDE';
+    type: "SHOW";
+    payload: {
+      content: PayloadTypes;
     };
+  }
+  | {
+    type: "HIDE";
+  };
 
 type Dispatch = (action: Action) => void;
 
@@ -33,12 +33,12 @@ type ModalProviderProps = {
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case 'SHOW':
+    case "SHOW":
       return {
         isActive: true,
         content: action.payload.content,
       };
-    case 'HIDE':
+    case "HIDE":
       return {
         isActive: false,
         content: null,
@@ -66,7 +66,7 @@ const ModalProvider = ({ children }: ModalProviderProps) => {
 function useModalState() {
   const context = useContext(ModalStateContext);
   if (context === undefined) {
-    throw new Error('useModalState must be used within a ModalProvider');
+    throw new Error("useModalState must be used within a ModalProvider");
   }
   return context;
 }
@@ -74,7 +74,7 @@ function useModalState() {
 function useModalDispatch() {
   const context = useContext(ModalDispatchContext);
   if (context === undefined) {
-    throw new Error('useModalDispatch must be used within a ModalProvider');
+    throw new Error("useModalDispatch must be used within a ModalProvider");
   }
   return context;
 }

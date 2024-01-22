@@ -11,7 +11,7 @@ function useChartNavigation() {
     const currentDate = segmentData[segment].mainChart.currentDate;
 
     switch (view) {
-      case "daily":
+      case "daily": {
         const tomorrow = new Date(currentDate);
         tomorrow.setDate(tomorrow.getDate() + 1);
 
@@ -20,8 +20,9 @@ function useChartNavigation() {
           segment,
           currentDate: tomorrow,
         });
+      }
 
-      case "weekly":
+      case "weekly": {
         const nextWeek = new Date(currentDate);
         nextWeek.setDate(nextWeek.getDate() + 7);
 
@@ -30,8 +31,9 @@ function useChartNavigation() {
           segment,
           currentDate: nextWeek,
         });
+      }
 
-      case "monthly":
+      case "monthly": {
         const nextMonth = new Date(currentDate);
         nextMonth.setMonth(nextMonth.getMonth() + 1);
 
@@ -40,8 +42,9 @@ function useChartNavigation() {
           segment,
           currentDate: nextMonth,
         });
+      }
 
-      case "yearly":
+      case "yearly": {
         const nextYear = new Date(currentDate);
         nextYear.setFullYear(nextYear.getFullYear() + 1);
 
@@ -50,6 +53,7 @@ function useChartNavigation() {
           segment,
           currentDate: nextYear,
         });
+      }
     }
   };
 
@@ -58,7 +62,7 @@ function useChartNavigation() {
     const currentDate = segmentData[segment].mainChart.currentDate;
 
     switch (view) {
-      case "daily":
+      case "daily": {
         const yesterday = new Date(currentDate);
         yesterday.setDate(yesterday.getDate() - 1);
 
@@ -67,8 +71,9 @@ function useChartNavigation() {
           segment,
           currentDate: yesterday,
         });
+      }
 
-      case "weekly":
+      case "weekly": {
         const prevWeek = new Date(currentDate);
         prevWeek.setDate(prevWeek.getDate() - 7);
 
@@ -77,8 +82,9 @@ function useChartNavigation() {
           segment,
           currentDate: prevWeek,
         });
+      }
 
-      case "monthly":
+      case "monthly": {
         const prevMonth = new Date(currentDate);
         prevMonth.setMonth(prevMonth.getMonth() - 1);
 
@@ -87,8 +93,9 @@ function useChartNavigation() {
           segment,
           currentDate: prevMonth,
         });
+      }
 
-      case "yearly":
+      case "yearly": {
         const prevYear = new Date(currentDate);
         prevYear.setFullYear(prevYear.getFullYear() - 1);
 
@@ -97,6 +104,7 @@ function useChartNavigation() {
           segment,
           currentDate: prevYear,
         });
+      }
     }
   };
 
@@ -106,35 +114,39 @@ function useChartNavigation() {
     const minDate = segmentData[segment].dateFrom;
 
     switch (view) {
-      case "daily":
+      case "daily": {
         const yesterday = new Date(currentDate);
         yesterday.setDate(yesterday.getDate() - 1);
 
         return yesterday < minDate;
+      }
 
-      case "weekly":
+      case "weekly": {
         const prevWeek = new Date(currentDate);
         //TODO: let scroll to week before minDate
         prevWeek.setDate(prevWeek.getDate() - 2);
 
         return prevWeek < minDate;
+      }
 
-      case "monthly":
-        const d = new Date(currentDate);
-        d.setMonth(d.getMonth() - 1);
+      case "monthly": {
+        const date = new Date(currentDate);
+        date.setMonth(date.getMonth() - 1);
 
-        const prevMonth = d.getMonth();
+        const prevMonth = date.getMonth();
         const minMonth = minDate.getMonth();
 
         return prevMonth < minMonth;
+      }
 
-      case "yearly":
+      case "yearly": {
         const prevYear = new Date(currentDate);
         prevYear.setFullYear(prevYear.getFullYear() - 1);
 
         const minYear = minDate.getFullYear();
 
         return prevYear.getFullYear() < minYear;
+      }
     }
   };
 

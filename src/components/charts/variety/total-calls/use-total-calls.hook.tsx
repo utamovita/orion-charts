@@ -3,61 +3,12 @@ import { useDataState } from "src/context/data.context";
 import { getDayData, getMonthData, getWeekData, getYearData } from "src/helpers/data";
 import { averageWeeksAmount, monthsAmount, workingDaysAmount, workingHoursAmount } from "src/helpers/date";
 import { roundToTwo } from "src/helpers/number";
-import { SummaryDataType } from "src/hooks/use-summary-chart.hook";
 
 function useTotalCalls() {
   const { view, mainChart, dateFrom, dateTo } = useDataState().segmentData.totalCalls;
   const { getFilteredData } = useFilters();
   const currentDate = mainChart.currentDate;
   const data = getFilteredData(dateFrom, dateTo);
-
-  const getTotalCallsSummaryListData = (average: boolean = false) => {
-    if (view === "daily") {
-      const currentDayData = getDayData(currentDate, data);
-
-      const summaryData = currentDayData.map((item) => ({
-        name: item.name,
-        amount: average ? roundToTwo(item.data.length / workingHoursAmount) : item.data.length,
-      }));
-
-      return summaryData;
-    }
-
-    if (view === "weekly") {
-      const currentWeekData = getWeekData(currentDate, data);
-
-      const summaryData = currentWeekData.map((item) => ({
-        name: item.name,
-        amount: average ? roundToTwo(item.data.length / workingDaysAmount) : item.data.length,
-      }));
-
-      return summaryData;
-    }
-
-    if (view === "monthly") {
-      const currentMonthData = getMonthData(currentDate, data);
-
-      const summaryData = currentMonthData.map((item) => ({
-        name: item.name,
-        amount: average ? roundToTwo(item.data.length / averageWeeksAmount) : item.data.length,
-      }));
-
-      return summaryData;
-    }
-
-    if (view === "yearly") {
-      const currentYearData = getYearData(currentDate, data);
-
-      const summaryData = currentYearData.map((item) => ({
-        name: item.name,
-        amount: average ? roundToTwo(item.data.length / monthsAmount) : item.data.length,
-      }));
-
-      return summaryData;
-    }
-
-    return [];
-  }
 
   const getTotalCallsSummaryDatasets = (average: boolean = false) => {
     if (view === "daily") {
@@ -275,7 +226,6 @@ function useTotalCalls() {
   }
 
   return {
-    getTotalCallsSummaryListData,
     getTotalCallsSummaryDatasets,
     getTotalCallsMainChartDatasets,
   }

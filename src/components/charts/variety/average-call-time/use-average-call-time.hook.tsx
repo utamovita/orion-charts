@@ -208,33 +208,7 @@ function useAverageCallTime() {
     return [];
   }
 
-  const getAverageCallTimeSummaryListData = () => {
-    const currentDayData = getDayData(currentDate, data);
-
-    if (view === "daily") {
-      const datasets = currentDayData.map((item) => {
-        let totalCallTimeInSeconds = 0;
-        let amountOfCalls = 0;
-
-        item.data.map((item) => {
-          if (timeToSeconds(item.callLength) > 0) {
-            totalCallTimeInSeconds += timeToSeconds(item.callLength);
-            amountOfCalls += 1;
-          }
-        })
-
-        return {
-          name: item.name,
-          amount: amountOfCalls === 0 ? 0 : roundToTwo(totalCallTimeInSeconds / amountOfCalls),
-        }
-      });
-
-      return datasets;
-    }
-
-    return [];
-  }
-  return { getAverageCallTimeDatasets, getAverageCallTimeSummaryDatasets, getAverageCallTimeSummaryListData }
+  return { getAverageCallTimeDatasets, getAverageCallTimeSummaryDatasets }
 }
 
 export { useAverageCallTime }

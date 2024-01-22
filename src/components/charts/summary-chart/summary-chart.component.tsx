@@ -1,8 +1,9 @@
 import { Doughnut } from "react-chartjs-2";
 import { useChart } from "src/hooks/use-chart.hook";
-import { useChartVariety } from "../variety/use-chart-variety.hook";
-import { SegmentType } from "src/types/DataTypes.type";
+
+import { SegmentType, SummaryDataListType } from "src/types/DataTypes.type";
 import styles from "./summary-chart.module.scss";
+import { useSummaryChart } from "./use-summary-chart.hook";
 
 type SummaryProps = {
   segment: SegmentType;
@@ -12,8 +13,16 @@ type SummaryProps = {
 
 const Summary = (props: SummaryProps) => {
   const { segment, title, average = false } = props;
-  const { summaryChartData, summaryListData } = useChartVariety(segment, average)
+  const { summaryChartData } = useSummaryChart(segment, average)
   const { summaryChartOptions } = useChart();
+
+  const summaryListData: SummaryDataListType = [
+    {
+      name: "Filip Kowalski",
+      amount: 100,
+      color: "#FF0000",
+    },
+  ]
 
   return (
     <div className={styles.wrapper}>
@@ -23,14 +32,18 @@ const Summary = (props: SummaryProps) => {
           <Doughnut data={summaryChartData} options={summaryChartOptions} />
         </div>
 
-        <ol className={styles.list}>
-          {summaryListData.map(({ name, amount }) => (
+        <ul className={styles.list}>
+          {summaryListData.map(({ name, amount, color }) => (
             <li key={name} className={styles.element}>
+              <span
+                className={styles.elementColor}
+                style={{ backgroundColor: color }}
+              ></span>
               <span>{name} -</span>
               <span className={styles.elementAmount}>{amount}</span>
             </li>
           ))}
-        </ol>
+        </ul>
       </div>
     </div>
   );

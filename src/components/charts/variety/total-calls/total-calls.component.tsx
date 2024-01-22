@@ -19,7 +19,7 @@ const TotalCallsSection = () => {
       <MainChart segment="totalCalls"/>
       <div style={{display: "Flex", justifyContent: "space-between"}}>
         <Summary segment="totalCalls" title="Łączna ilość połączeń"/>
-        <Summary segment="totalCalls" title="Średnia ilość połączeń" average={true}/>
+        {/* <Summary segment="totalCalls" title="Średnia ilość połączeń" average={true}/> */}
       </div>
     </>
   );

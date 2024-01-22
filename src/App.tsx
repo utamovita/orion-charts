@@ -5,15 +5,15 @@ import { Layout } from "./components/layout/layout.component";
 import { DataProvider } from "./context/data.context";
 import { Charts } from "./components/charts/charts.component";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Tooltip,
-  Legend,
   ArcElement,
-  PointElement,
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
   LineElement,
+  PointElement,
+  Tooltip,
 } from "chart.js";
 import { Modal } from "./components/shared/modal/modal.component";
 import { Suspense } from "react";

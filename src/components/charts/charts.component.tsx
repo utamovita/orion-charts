@@ -76,8 +76,6 @@ const Charts = () => {
 
   const { globalData } = state;
 
-  console.log("render charts");
-
   if (globalData.length === 0) {
     return null;
   }

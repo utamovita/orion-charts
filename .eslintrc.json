@@ -1,0 +1,74 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:react/recommended", "prettier"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint", "react"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"],
+        "paths": ["."]
+      }
+    }
+  },
+  "rules": {
+    // strings must use doublequote
+    "quotes": [2, "double", { "avoidEscape": true, "allowTemplateLiterals": true }],
+    // suppress errors for missing 'import React' in files
+    "react/react-in-jsx-scope": "off",
+    // Allow components without display-name
+    "react/display-name": "off",
+    "css-modules/no-unused-class": [0, { "camelCase": true }],
+
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+    "no-irregular-whitespace": [
+      "warn",
+      {
+        "skipStrings": true,
+        "skipComments": true,
+        "skipTemplates": true
+      }
+    ],
+    "sort-imports": [
+      "warn",
+      {
+        "ignoreCase": true,
+        "ignoreDeclarationSort": true
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["**/*.tsx"],
+      "rules": {
+        "react/prop-types": 0
+      }
+    }
+  ]
+}

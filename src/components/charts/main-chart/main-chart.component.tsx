@@ -1,13 +1,12 @@
 import { Line } from "react-chartjs-2";
 import { useChart } from "src/hooks/use-chart.hook";
-import { useMainChart } from "src/hooks/use-main-chart.hook";
+import { useMainChart } from "src/components/charts/main-chart/use-main-chart.hook";
 import {
   ArrowLeft as ArrowLeftIcon,
   ArrowRight as ArrowRightIcon,
 } from "@carbon/icons-react";
 import { useChartNavigation } from "src/hooks/use-chart-navigation.hook";
 import styles from "./main-chart.module.scss";
-import { useChartVariety } from "../variety/use-chart-variety.hook";
 import { SegmentType } from "src/types/DataTypes.type";
 
 type MainChartProps = {
@@ -16,16 +15,15 @@ type MainChartProps = {
 
 const MainChart = (props: MainChartProps) => {
   const { segment } = props;
-  const { mainChartData } = useChartVariety(segment);
   const { mainChartOptions } = useChart();
-  const { getChartTitle } = useMainChart();
+  const { chartTitle, mainChartData } = useMainChart(segment);
   const {
     handleNextButtonClick,
     handlePrevButtonClick,
     nextButtonDisabled,
     prevButtonDisabled,
   } = useChartNavigation();
-  const chartTitle = getChartTitle(segment);
+
   const prevBtnDisabled = prevButtonDisabled(segment);
   const nextBtnDisabled = nextButtonDisabled(segment);
 

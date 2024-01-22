@@ -41,9 +41,15 @@ const FilterContent = () => {
           value={sort}
           aria-label="Sortuj"
         >
-          <RadioGroup.Item value="desc" children={"Malejąco"} />
-          <RadioGroup.Item value="asc" children={"Rosnąco"} />
-          <RadioGroup.Item value="alpha" children={"Alfabetycznie"} />
+          <RadioGroup.Item value="desc">
+            Malejąco
+          </RadioGroup.Item>
+          <RadioGroup.Item value="asc">
+            Rosnąco
+          </RadioGroup.Item>
+          <RadioGroup.Item value="alpha">
+            Alfabetycznie
+          </RadioGroup.Item>
         </RadioGroup>
       </div>
 

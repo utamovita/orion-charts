@@ -1,6 +1,4 @@
-import { useDataState } from "src/context/data.context";
-import { DataType, RecordType, WeekdayType } from "src/types/DataTypes.type";
-import { formatDate } from "./date";
+import { DataType, RecordType } from "src/types/DataTypes.type";
 
 const getUniqueNames = (data: RecordType[]) => {
   const allNames: string[] = [];
@@ -85,8 +83,6 @@ const getYearData = (currentDate: Date, data: RecordType[]): RecordType[] => {
   const dateTo = new Date(currentDate.getFullYear(), 11, 31);
   dateTo.setHours(23, 59, 59, 999);
 
-
-  console.log(dateFrom, dateTo);
   const dataFromCurrentYear: RecordType[] = data.map((item) => {
     return {
       name: item.name,

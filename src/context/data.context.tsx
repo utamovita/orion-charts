@@ -124,7 +124,7 @@ function reducer(state: State, action: Action): State {
       };
     }
 
-    case "UPDATE_DATE_RANGE":
+    case "UPDATE_DATE_RANGE": {
       return {
         ...state,
         segmentData: {
@@ -139,8 +139,9 @@ function reducer(state: State, action: Action): State {
           },
         },
       };
+    }
 
-    case "UPDATE_SELECTED_DATE_RANGE":
+    case "UPDATE_SELECTED_DATE_RANGE": {
       return {
         ...state,
         segmentData: {
@@ -152,14 +153,16 @@ function reducer(state: State, action: Action): State {
           },
         },
       };
+    }
 
-    case "UPDATE_SORTING":
+    case "UPDATE_SORTING": {
       return {
         ...state,
         sort: action.sort,
       };
+    }
 
-    case "UPDATE_VIEW":
+    case "UPDATE_VIEW": {
       const newCurrentDate = new Date(state.globalMinDate);
 
       if (action.view === "weekly") {
@@ -211,7 +214,9 @@ function reducer(state: State, action: Action): State {
           },
         },
       };
-    case "UPDATE_CURRENT_DATE":
+    }
+
+    case "UPDATE_CURRENT_DATE": {
       const currentDate = new Date(action.currentDate);
       currentDate.setHours(0, 0, 0, 0);
 
@@ -228,8 +233,9 @@ function reducer(state: State, action: Action): State {
           },
         },
       };
+    }
 
-    case "UPDATE_FILTER_SELECTION":
+    case "UPDATE_FILTER_SELECTION": {
       if (!action.checked) {
         return {
           ...state,
@@ -244,8 +250,9 @@ function reducer(state: State, action: Action): State {
         ...state,
         filterSelection: [...state.filterSelection, action.name],
       };
+    }
 
-    case "UPDATE_SUMMARY_LIST_DATA":
+    case "UPDATE_SUMMARY_LIST_DATA": {
       return {
         ...state,
         segmentData: {
@@ -256,6 +263,7 @@ function reducer(state: State, action: Action): State {
           },
         },
       };
+    }
 
     default:
       throw new Error();

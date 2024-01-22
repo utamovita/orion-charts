@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 
 import styles from "./modal.module.scss";
 import { useModalDispatch, useModalState } from "src/context/modal.context";

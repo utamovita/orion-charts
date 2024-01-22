@@ -33,10 +33,18 @@ const ChangeViewForm = (props: ChangeViewFormProps) => {
           value={view}
           aria-label="Widok"
         >
-          <RadioGroup.Item value="daily" children={"Dzienny"} />
-          <RadioGroup.Item value="weekly" children={"Tygodniowy"} />
-          <RadioGroup.Item value="monthly" children={"Miesięczny"} />
-          <RadioGroup.Item value="yearly" children={"Roczny"} />
+          <RadioGroup.Item value="daily">
+            Dzienny
+          </RadioGroup.Item>
+          <RadioGroup.Item value="weekly">
+            Tygodniowy
+          </RadioGroup.Item>
+          <RadioGroup.Item value="monthly">
+            Miesięczny
+          </RadioGroup.Item>
+          <RadioGroup.Item value="yearly">
+            Roczny
+          </RadioGroup.Item>
         </RadioGroup>
       </div>
     </div>

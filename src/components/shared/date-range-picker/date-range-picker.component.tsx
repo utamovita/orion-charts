@@ -6,12 +6,6 @@ import { SegmentType } from "src/types/DataTypes.type";
 import { Button } from "../button/button.component";
 import { useModalDispatch } from "src/context/modal.context";
 
-type StateType = {
-  startDate?: Date | undefined;
-  endDate?: Date | undefined;
-  key?: string | undefined;
-};
-
 type CustomDateRangePickerProps = {
   min: Date;
   segment: SegmentType;

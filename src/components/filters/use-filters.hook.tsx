@@ -1,5 +1,4 @@
 import { useDataState } from "src/context/data.context";
-import { RecordType } from "src/types/DataTypes.type";
 
 function useFilters() {
   const { globalData, filterSelection } = useDataState();

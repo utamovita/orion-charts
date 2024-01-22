@@ -1,5 +1,5 @@
 import { useDataDispatch } from "../context/data.context";
-import { RecordType, SegmentType } from "../types/DataTypes.type";
+import { RecordType } from "../types/DataTypes.type";
 
 const dataIndexes = {
   skypeName: 0,

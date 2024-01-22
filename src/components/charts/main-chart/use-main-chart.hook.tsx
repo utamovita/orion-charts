@@ -1,9 +1,10 @@
 import { useDataState } from "src/context/data.context";
 import { formatDate } from "src/helpers/date";
-import { SegmentType } from "src/types/DataTypes.type";
-import { useChart } from "./use-chart.hook";
+import { RecordType, SegmentType } from "src/types/DataTypes.type";
+import { useChart } from "../../../hooks/use-chart.hook";
 import { useTotalCalls } from "src/components/charts/variety/total-calls/use-total-calls.hook";
 import { useAverageCallTime } from "src/components/charts/variety/average-call-time/use-average-call-time.hook";
+import { useFilters } from "src/components/filters/use-filters.hook";
 
 const dailyViewChartLabels = [
   "06:00",
@@ -49,11 +50,13 @@ const yearlyViewChartLabels = [
   "Grudzień",
 ];
 
-function useMainChart() {
+function useMainChart(segment: SegmentType) {
   const { segmentData } = useDataState();
   const { chartColors } = useChart();
+  const { getFilteredData } = useFilters();
+  const { dateFrom, dateTo } = useDataState().segmentData[segment];
 
-  const getLabels = (segment: SegmentType) => {
+  const getLabels = () => {
     const view = segmentData[segment].view;
 
     switch (view) {
@@ -70,12 +73,12 @@ function useMainChart() {
     }
   };
 
-  const getChartTitle = (segment: SegmentType) => {
+  const getChartTitle = () => {
     const d = segmentData[segment].mainChart.currentDate;
     const view = segmentData[segment].view;
 
     switch (view) {
-      case "daily":
+      case "daily": {
         const day = d.getDay();
         const specificDate = formatDate(d);
 
@@ -83,8 +86,8 @@ function useMainChart() {
 
         const dayNumber = day === 0 ? 6 : day - 1;
         return `${weeklyViewChartLabels[dayNumber]} (${specificDate})`;
-
-      case "weekly":
+      }
+      case "weekly": {
         const fromDate = d;
         const toDate = new Date(d);
 
@@ -94,12 +97,12 @@ function useMainChart() {
         const to = formatDate(toDate);
 
         return `${from} do ${to}`;
-
-      case "monthly":
+      }
+      case "monthly": {
         const month = d.getMonth();
 
         return yearlyViewChartLabels[month];
-
+      }
       case "yearly":
         return d.getFullYear().toString();
 
@@ -126,7 +129,7 @@ function useMainChart() {
     };
   };
 
-  const getMainChartDatasets = (segment: SegmentType) => {
+  const getMainChartDatasets = () => {
     const { getTotalCallsMainChartDatasets } = useTotalCalls()
     const { getAverageCallTimeDatasets } = useAverageCallTime();
 
@@ -145,11 +148,23 @@ function useMainChart() {
     return [];
   };
 
+
+  const filteredData: RecordType[] = getFilteredData(dateFrom, dateTo);
+  const labelNames = filteredData.map((item) => item.name);
+  const mainChartLabels = getLabels();
+  const mainChartDatasets = getMainChartDatasets();
+
+  const mainChartData = getMainChartData(
+    labelNames,
+    mainChartLabels,
+    mainChartDatasets
+  );
+
+  const chartTitle = getChartTitle();
+
   return {
-    getLabels,
-    getChartTitle,
-    getMainChartData,
-    getMainChartDatasets,
+    mainChartData,
+    chartTitle
   };
 }
 

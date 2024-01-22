@@ -23,7 +23,7 @@ const getDateRange = (dates: Date[]): { min: Date; max: Date } => {
 };
 
 const sumDatesByData = (data: RecordType[]) => {
-  let allDates: Date[] = [];
+  const allDates: Date[] = [];
 
   data.forEach((item) => {
     item.data.forEach((item) => {
@@ -51,7 +51,7 @@ function getWeekdaysInMonth(date: Date) {
 
   let weekdays = 0;
 
-  for (var i = 0; i < days; i++) {
+  for (let i = 0; i < days; i++) {
     if (isWeekday(year, month, i + 1))
       weekdays++;
   }
