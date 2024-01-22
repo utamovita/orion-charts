@@ -33,11 +33,12 @@
 .content {
   position: relative;
   min-height: 200px;
-  padding: vr.$spacingSize60 vr.$spacingSize20 vr.$spacingSize30;
+  padding: vr.$spacingSize60 vr.$spacingSize20 vr.$spacingSize60;
   display: flex;
   flex-direction: column;
   gap: vr.$spacingSize50;
   align-items: center;
+  min-height: 250px;
 }
 
 .closeButton {
