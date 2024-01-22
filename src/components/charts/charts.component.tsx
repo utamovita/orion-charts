@@ -8,6 +8,7 @@ import { useChart } from "src/hooks/use-chart.hook";
 import { Container } from "../shared/container/container.component";
 import styles from "./charts.module.scss";
 import { AverageCallTime } from "./variety/average-call-time/average-call-time.component";
+import { ShortCalls } from "./variety/short-calls/short-calls.component";
 
 type ChartHeaderProps = {
   title: string;
@@ -89,15 +90,14 @@ const Charts = () => {
       <Section>
         <AverageCallTime />
       </Section>
-      {/* <Section title="Średni czas trwania rozmowy (sekundy)">
-        <Sample1 />
+      <Section>
+        <ShortCalls />
       </Section>
+      {/* 
       <Section title="Kontrahenci">
         <Sample2 />
       </Section>
-      <Section title="Ilość rozmów < 10s">
-        <Sample3 />
-      </Section> */}
+       */}
     </div>
   );
 };

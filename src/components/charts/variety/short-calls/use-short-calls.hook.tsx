@@ -1,16 +1,17 @@
 import { useFilters } from "src/components/filters/use-filters.hook";
 import { useDataState } from "src/context/data.context";
 import { getDayData, getMonthData, getWeekData, getYearData } from "src/helpers/data";
-import { averageWeeksAmount, monthsAmount, workingDaysAmount, workingHoursAmount } from "src/helpers/date";
-import { roundToTwo } from "src/helpers/number";
+import { timeToSeconds } from "src/helpers/number";
 
-function useTotalCalls() {
-  const { view, mainChart, dateFrom, dateTo } = useDataState().segmentData.totalCalls;
+function useShortCalls() {
+  const { view, mainChart, dateFrom, dateTo } = useDataState().segmentData.shortCalls;
   const { getFilteredData } = useFilters();
   const currentDate = mainChart.currentDate;
   const data = getFilteredData(dateFrom, dateTo);
 
-  const getTotalCallsMainChartDatasets = () => {
+  const maxSeconds = 10;
+
+  const getShortCallsMainChartDatasets = () => {
     if (view === "daily") {
       const currentDayData = getDayData(currentDate, data);
 
@@ -36,14 +37,12 @@ function useTotalCalls() {
           if (item.date) {
             const itemHour = new Date(item.date).getHours();
 
-            if (itemHour >= 6 && itemHour <= 19) {
+            if (itemHour >= 6 && itemHour <= 19 && timeToSeconds(item.callLength) < maxSeconds) {
               amountPerHourView[itemHour - 6] += 1;
             }
           }
         });
-
         return amountPerHourView;
-
       });
 
       return datasets;
@@ -66,13 +65,15 @@ function useTotalCalls() {
         item.data.map((item) => {
           const itemDay = new Date(item.date).getDay();
 
-          // sunday is 0, but we want it to be 6
-          if (itemDay === 0) {
-            amountPerDayView[6] += 1;
-            return;
-          }
+          if (timeToSeconds(item.callLength) < maxSeconds) {
+            // sunday is 0, but we want it to be 6
+            if (itemDay === 0) {
+              amountPerDayView[6] += 1;
+              return;
+            }
 
-          amountPerDayView[itemDay - 1] += 1;
+            amountPerDayView[itemDay - 1] += 1;
+          }
         });
 
         return amountPerDayView;
@@ -95,26 +96,28 @@ function useTotalCalls() {
         ];
 
         item.data.map((item) => {
-          const itemDay = new Date(item.date).getDate();
+          if (timeToSeconds(item.callLength) < maxSeconds) {
+            const itemDay = new Date(item.date).getDate();
 
-          if (itemDay >= 1 && itemDay <= 7) {
-            return amountPerWeekView[0] += 1;
-          }
+            if (itemDay >= 1 && itemDay <= 7) {
+              return amountPerWeekView[0] += 1;
+            }
 
-          if (itemDay >= 8 && itemDay <= 14) {
-            return amountPerWeekView[1] += 1;
-          }
+            if (itemDay >= 8 && itemDay <= 14) {
+              return amountPerWeekView[1] += 1;
+            }
 
-          if (itemDay >= 15 && itemDay <= 21) {
-            return amountPerWeekView[2] += 1;
-          }
+            if (itemDay >= 15 && itemDay <= 21) {
+              return amountPerWeekView[2] += 1;
+            }
 
-          if (itemDay >= 22 && itemDay <= 28) {
-            return amountPerWeekView[3] += 1;
-          }
+            if (itemDay >= 22 && itemDay <= 28) {
+              return amountPerWeekView[3] += 1;
+            }
 
-          if (itemDay >= 29 && itemDay <= 31) {
-            return amountPerWeekView[4] += 1;
+            if (itemDay >= 29 && itemDay <= 31) {
+              return amountPerWeekView[4] += 1;
+            }
           }
         });
 
@@ -148,7 +151,9 @@ function useTotalCalls() {
           if (item.date) {
             const itemMonth = new Date(item.date).getMonth();
 
-            amountPerMonthView[itemMonth] += 1;
+            if (timeToSeconds(item.callLength) < maxSeconds) {
+              amountPerMonthView[itemMonth] += 1;
+            }
           }
         });
 
@@ -159,22 +164,17 @@ function useTotalCalls() {
       return datasets;
 
     }
-    return [];
+
+    return []
   }
 
-  const getTotalCallsSummaryDatasets = (average: boolean = false) => {
+  const getShortCallsSummaryDatasets = () => {
     if (view === "daily") {
       const currentDayData = getDayData(currentDate, data);
 
       const datasets: number[] = currentDayData.map((item) => {
-        return item.data.length;
+        return item.data.filter((item) => timeToSeconds(item.callLength) < maxSeconds).length;
       });
-
-      if (average) {
-        return datasets.map((item) => {
-          return roundToTwo(item / workingHoursAmount);
-        });
-      }
 
       return datasets;
     }
@@ -183,14 +183,8 @@ function useTotalCalls() {
       const currentWeekData = getWeekData(currentDate, data);
 
       const datasets: number[] = currentWeekData.map((item) => {
-        return item.data.length;
+        return item.data.filter((item) => timeToSeconds(item.callLength) < maxSeconds).length;
       });
-
-      if (average) {
-        return datasets.map((item) => {
-          return roundToTwo(item / workingDaysAmount);
-        });
-      }
 
       return datasets;
     }
@@ -199,7 +193,7 @@ function useTotalCalls() {
       const currentMonthData = getMonthData(currentDate, data);
 
       const datasets: number[] = currentMonthData.map((item) => {
-        return average ? roundToTwo(item.data.length / averageWeeksAmount) : item.data.length;
+        return item.data.filter((item) => timeToSeconds(item.callLength) < maxSeconds).length;
       });
 
       return datasets;
@@ -209,19 +203,19 @@ function useTotalCalls() {
       const currentYearData = getYearData(currentDate, data);
 
       const datasets: number[] = currentYearData.map((item) => {
-        return average ? roundToTwo(item.data.length / monthsAmount) : item.data.length;
+        return item.data.filter((item) => timeToSeconds(item.callLength) < maxSeconds).length;
       });
 
       return datasets;
     }
 
-    return [];
+    return []
   }
 
   return {
-    getTotalCallsSummaryDatasets,
-    getTotalCallsMainChartDatasets,
+    getShortCallsSummaryDatasets,
+    getShortCallsMainChartDatasets,
   }
 }
 
-export { useTotalCalls }
+export { useShortCalls }

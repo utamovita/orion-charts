@@ -14,7 +14,7 @@ type RecordType = {
 
 type WeekdayType = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
-type SegmentType = "totalCalls" | "averageCallTime";
+type SegmentType = "totalCalls" | "averageCallTime" | "shortCalls";
 
 type SortType = "desc" | "asc" | "alpha";
 

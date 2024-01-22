@@ -5,6 +5,7 @@ import { useChart } from "../../../hooks/use-chart.hook";
 import { useTotalCalls } from "src/components/charts/variety/total-calls/use-total-calls.hook";
 import { useAverageCallTime } from "src/components/charts/variety/average-call-time/use-average-call-time.hook";
 import { useFilters } from "src/components/filters/use-filters.hook";
+import { useShortCalls } from "../variety/short-calls/use-short-calls.hook";
 
 const dailyViewChartLabels = [
   "06:00",
@@ -57,6 +58,7 @@ function useMainChart(segment: SegmentType) {
   const { dateFrom, dateTo } = useDataState().segmentData[segment];
   const { getTotalCallsMainChartDatasets } = useTotalCalls();
   const { getAverageCallTimeDatasets } = useAverageCallTime();
+  const { getShortCallsMainChartDatasets } = useShortCalls();
 
   const getLabels = () => {
     const view = segmentData[segment].view;
@@ -132,7 +134,6 @@ function useMainChart(segment: SegmentType) {
   };
 
   const getMainChartDatasets = () => {
-
     if (segment === "totalCalls") {
       const datasets = getTotalCallsMainChartDatasets();
 
@@ -141,6 +142,12 @@ function useMainChart(segment: SegmentType) {
 
     if (segment === "averageCallTime") {
       const datasets = getAverageCallTimeDatasets();
+
+      return datasets;
+    }
+
+    if (segment === "shortCalls") {
+      const datasets = getShortCallsMainChartDatasets();
 
       return datasets;
     }

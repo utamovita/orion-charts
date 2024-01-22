@@ -4,6 +4,7 @@ import { RecordType, SegmentType, SummaryDataListType } from "src/types/DataType
 import { useTotalCalls } from "src/components/charts/variety/total-calls/use-total-calls.hook";
 import { useAverageCallTime } from "src/components/charts/variety/average-call-time/use-average-call-time.hook";
 import { useFilters } from "src/components/filters/use-filters.hook";
+import { useShortCalls } from "../variety/short-calls/use-short-calls.hook";
 
 
 export type SummaryDataType = Array<{
@@ -18,6 +19,7 @@ function useSummaryChart(segment: SegmentType, average: boolean = false) {
   const { chartColors } = useChart();
   const { getTotalCallsSummaryDatasets } = useTotalCalls();
   const { getAverageCallTimeSummaryDatasets } = useAverageCallTime();
+  const { getShortCallsSummaryDatasets } = useShortCalls();
   const { getFilteredData } = useFilters();
 
   const getSummaryChartData = (labels: string[], datasets: number[]) => {
@@ -54,6 +56,12 @@ function useSummaryChart(segment: SegmentType, average: boolean = false) {
       return datasets;
     }
 
+    if (segment === "shortCalls") {
+      const datasets = getShortCallsSummaryDatasets();
+
+      return datasets;
+    }
+
     return [];
   };
 
@@ -67,7 +75,7 @@ function useSummaryChart(segment: SegmentType, average: boolean = false) {
   );
 
   if (sort === "desc") {
-     list.sort((a, b) => b.amount - a.amount);
+    list.sort((a, b) => b.amount - a.amount);
   }
 
   if (sort === "asc") {
@@ -75,11 +83,11 @@ function useSummaryChart(segment: SegmentType, average: boolean = false) {
   }
 
   if (sort === "alpha") {
-     list.sort((a, b) => a.name.localeCompare(b.name));
+    list.sort((a, b) => a.name.localeCompare(b.name));
   }
 
   const filteredList = list.filter((item) => item.amount > 0);
-  
+
   return {
     summaryChartData: chart,
     summaryListData: filteredList,

@@ -110,6 +110,7 @@ function reducer(state: State, action: Action): State {
       const updatedSegmentData = {
         totalCalls: defaultValues,
         averageCallTime: defaultValues,
+        shortCalls: defaultValues,
       };
 
       const uniqueNames = getUniqueNames(action.data);
@@ -296,6 +297,7 @@ const DataProvider = ({ children }: DataProviderProps) => {
     segmentData: {
       totalCalls: defaultSegmentValues,
       averageCallTime: defaultSegmentValues,
+      shortCalls: defaultSegmentValues,
     },
   };
 
