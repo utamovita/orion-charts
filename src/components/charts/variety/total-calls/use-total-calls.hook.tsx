@@ -151,33 +151,26 @@ function useTotalCalls() {
         ];
 
         item.data.map((item) => {
-          if (item.date) {
-            const itemDay = new Date(item.date).getDate();
+          const itemDay = new Date(item.date).getDate();
 
-            if (itemDay >= 1 && itemDay <= 7) {
-              amountPerWeekView[0] += 1;
-              return;
-            }
+          if (itemDay >= 1 && itemDay <= 7) {
+            return amountPerWeekView[0] += 1;
+          }
 
-            if (itemDay >= 8 && itemDay <= 14) {
-              amountPerWeekView[1] += 1;
-              return;
-            }
+          if (itemDay >= 8 && itemDay <= 14) {
+            return amountPerWeekView[1] += 1;
+          }
 
-            if (itemDay >= 15 && itemDay <= 21) {
-              amountPerWeekView[2] += 1;
-              return;
-            }
+          if (itemDay >= 15 && itemDay <= 21) {
+            return amountPerWeekView[2] += 1;
+          }
 
-            if (itemDay >= 22 && itemDay <= 28) {
-              amountPerWeekView[3] += 1;
-              return;
-            }
+          if (itemDay >= 22 && itemDay <= 28) {
+            return amountPerWeekView[3] += 1;
+          }
 
-            if (itemDay >= 29 && itemDay <= 31) {
-              amountPerWeekView[4] += 1;
-              return;
-            }
+          if (itemDay >= 29 && itemDay <= 31) {
+            return amountPerWeekView[4] += 1;
           }
         });
 
