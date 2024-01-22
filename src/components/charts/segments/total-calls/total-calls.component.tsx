@@ -3,10 +3,9 @@ import { ChartHeader } from "../../charts.component";
 import { MainChart } from "../../main-chart/main-chart.component";
 import { Summary } from "../../summary-chart/summary-chart.component";
 
-const TotalCallsSection = () => {
+const TotalCalls = () => {
   const state = useDataState();
   const { dateFrom, dateTo, view } = state.segmentData.totalCalls;
-
 
   return (
     <>
@@ -26,4 +25,4 @@ const TotalCallsSection = () => {
   );
 };
 
-export { TotalCallsSection };
+export { TotalCalls };

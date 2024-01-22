@@ -111,6 +111,7 @@ function reducer(state: State, action: Action): State {
         totalCalls: defaultValues,
         averageCallTime: defaultValues,
         shortCalls: defaultValues,
+        contractors: defaultValues,
       };
 
       const uniqueNames = getUniqueNames(action.data);
@@ -298,6 +299,7 @@ const DataProvider = ({ children }: DataProviderProps) => {
       totalCalls: defaultSegmentValues,
       averageCallTime: defaultSegmentValues,
       shortCalls: defaultSegmentValues,
+      contractors: defaultSegmentValues,
     },
   };
 

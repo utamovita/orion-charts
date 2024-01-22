@@ -1,11 +1,10 @@
 import { useDataState } from "src/context/data.context";
 import { useChart } from "../../../hooks/use-chart.hook";
 import { RecordType, SegmentType, SummaryDataListType } from "src/types/DataTypes.type";
-import { useTotalCalls } from "src/components/charts/variety/total-calls/use-total-calls.hook";
-import { useAverageCallTime } from "src/components/charts/variety/average-call-time/use-average-call-time.hook";
+import { useTotalCalls } from "src/components/charts/segments/total-calls/use-total-calls.hook";
+import { useAverageCallTime } from "src/components/charts/segments/average-call-time/use-average-call-time.hook";
 import { useFilters } from "src/components/filters/use-filters.hook";
-import { useShortCalls } from "../variety/short-calls/use-short-calls.hook";
-
+import { useShortCalls } from "../segments/short-calls/use-short-calls.hook";
 
 export type SummaryDataType = Array<{
   name: string;
@@ -26,7 +25,7 @@ function useSummaryChart(segment: SegmentType, average: boolean = false) {
     const summaryListData: SummaryDataListType = datasets.map((datasetAmount, index) => ({
       name: labels[index],
       amount: datasetAmount,
-      color: chartColors[index],
+      color: `rgb(${chartColors[index]})`,
     }));
 
     return {
@@ -35,7 +34,7 @@ function useSummaryChart(segment: SegmentType, average: boolean = false) {
         datasets: [
           {
             data: datasets,
-            backgroundColor: chartColors,
+            backgroundColor: chartColors.map((color) => `rgb(${color})`),
           },
         ],
       },

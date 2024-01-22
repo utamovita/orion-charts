@@ -1,5 +1,5 @@
 import { useDataState } from "../../context/data.context";
-import { TotalCallsSection } from "./variety/total-calls/total-calls.component";
+import { TotalCalls } from "./segments/total-calls/total-calls.component";
 import { Calendar as CalendarIcon } from "@carbon/icons-react";
 import { FilterButton } from "../filters/filters.component";
 import { SegmentType, ViewType } from "src/types/DataTypes.type";
@@ -7,8 +7,9 @@ import { formatDate } from "src/helpers/date";
 import { useChart } from "src/hooks/use-chart.hook";
 import { Container } from "../shared/container/container.component";
 import styles from "./charts.module.scss";
-import { AverageCallTime } from "./variety/average-call-time/average-call-time.component";
-import { ShortCalls } from "./variety/short-calls/short-calls.component";
+import { AverageCallTime } from "./segments/average-call-time/average-call-time.component";
+import { ShortCalls } from "./segments/short-calls/short-calls.component";
+import { Contractors } from "./segments/contractors/contractors.component";
 
 type ChartHeaderProps = {
   title: string;
@@ -85,7 +86,7 @@ const Charts = () => {
     <div className={styles.wrapper}>
       <FilterButton />
       <Section>
-        <TotalCallsSection />
+        <TotalCalls />
       </Section>
       <Section>
         <AverageCallTime />
@@ -93,11 +94,9 @@ const Charts = () => {
       <Section>
         <ShortCalls />
       </Section>
-      {/* 
-      <Section title="Kontrahenci">
-        <Sample2 />
+      <Section>
+        <Contractors />
       </Section>
-       */}
     </div>
   );
 };

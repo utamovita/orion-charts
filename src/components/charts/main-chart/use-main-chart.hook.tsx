@@ -2,10 +2,10 @@ import { useDataState } from "src/context/data.context";
 import { formatDate } from "src/helpers/date";
 import { RecordType, SegmentType } from "src/types/DataTypes.type";
 import { useChart } from "../../../hooks/use-chart.hook";
-import { useTotalCalls } from "src/components/charts/variety/total-calls/use-total-calls.hook";
-import { useAverageCallTime } from "src/components/charts/variety/average-call-time/use-average-call-time.hook";
+import { useTotalCalls } from "src/components/charts/segments/total-calls/use-total-calls.hook";
+import { useAverageCallTime } from "src/components/charts/segments/average-call-time/use-average-call-time.hook";
 import { useFilters } from "src/components/filters/use-filters.hook";
-import { useShortCalls } from "../variety/short-calls/use-short-calls.hook";
+import { useShortCalls } from "../segments/short-calls/use-short-calls.hook";
 
 const dailyViewChartLabels = [
   "06:00",
@@ -123,8 +123,8 @@ function useMainChart(segment: SegmentType) {
     const datasets = data.map((item, index) => ({
       label: labelNames[index],
       data: item.map((item) => item),
-      backgroundColor: chartColors[index],
-      borderColor: chartColors[index],
+      backgroundColor: `rgb(${chartColors[index]})`,
+      borderColor: `rgb(${chartColors[index]})`,
     }));
 
     return {
