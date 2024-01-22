@@ -18,6 +18,7 @@ import {
 import { Modal } from "./components/shared/modal/modal.component";
 import { Suspense } from "react";
 import { ModalProvider } from "./context/modal.context";
+import { PdfProvider } from "./context/pdf.context";
 
 ChartJS.register(
   CategoryScale,
@@ -35,13 +36,15 @@ function App() {
   return (
     <DataProvider>
       <ModalProvider>
-        <Layout>
-          <Suspense fallback={null}>
-            <Modal />
-          </Suspense>
-          <FileUploader />
-          <Charts />
-        </Layout>
+        <PdfProvider>
+          <Layout>
+            <Suspense fallback={null}>
+              <Modal />
+            </Suspense>
+            <FileUploader />
+            <Charts />
+          </Layout>
+        </PdfProvider>
       </ModalProvider>
     </DataProvider>
   );

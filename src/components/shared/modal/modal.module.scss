@@ -1,4 +1,4 @@
-@use "src/styles/utilities/_variables" as vr;
+@use 'src/styles/utilities/_variables' as vr;
 
 .overlay {
   height: 100vh;
@@ -25,12 +25,15 @@
   max-width: 985px;
   max-height: 90vh;
   cursor: default;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .content {
   position: relative;
   min-height: 200px;
-  padding: vr.$spacingSize50 vr.$spacingSize80;
+  padding: vr.$spacingSize60 vr.$spacingSize20 vr.$spacingSize30;
   display: flex;
   flex-direction: column;
   gap: vr.$spacingSize50;

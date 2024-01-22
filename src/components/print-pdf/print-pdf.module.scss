@@ -1,0 +1,22 @@
+@use "src/styles/utilities/_variables" as vr;
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: vr.$spacingSize40 0 vr.$spacingSize50;
+  width: 100%;
+}
+
+.button {
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: none;
+  width: 230px;
+  font-size: 18px;
+  gap: vr.$spacingSize30;
+  background: var(--colorPrimary);
+  padding: 10px;
+}

@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { useDataDispatch, useDataState } from "src/context/data.context";
 import { useModalDispatch } from "src/context/modal.context";
 import {
+  DocumentDownload as DownloadIcon,
   Edit as EditIcon,
   Filter as FilterIcon,
   SortDescending as SortDescIcon,
@@ -11,6 +12,8 @@ import { SortType } from "src/types/DataTypes.type";
 import styles from "./filters.module.scss";
 import { RadioGroup } from "../shared/form/radio-group/radio-group.component";
 import { getUniqueNames } from "src/helpers/data";
+import { PrintPDF } from "../print-pdf/print-pdf.component";
+import { usePdfState } from "src/context/pdf.context";
 
 const FilterContent = () => {
   const dataDispatch = useDataDispatch();
@@ -70,18 +73,31 @@ const FilterContent = () => {
           ))}
         </div>
       </div>
+
+      <div className={styles.contentSection}>
+        <h3 className={styles.contentTitle}>
+          Akcje <DownloadIcon size={22} />
+        </h3>
+
+        <PrintPDF />
+      </div>
     </div>
   );
 };
 
 const FilterButton = () => {
   const modalDispatch = useModalDispatch();
+  const { isPrintView } = usePdfState();
 
   const showFiltersPopup = useCallback(() => {
     const content = <FilterContent />;
 
     modalDispatch({ type: "SHOW", payload: { content } });
   }, [modalDispatch]);
+
+  if (isPrintView) {
+    return null;
+  }
 
   return (
     <button className={styles.filterButton} onClick={showFiltersPopup}>

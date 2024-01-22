@@ -1,4 +1,5 @@
 import * as React from "react";
+import cx from "classnames";
 import styles from "./button.module.scss";
 
 type ButtonProps = {
@@ -21,10 +22,10 @@ const defaultProps = {
 };
 
 function Button(props: ButtonProps) {
-  const { children, onClick, type } = props;
+  const { children, onClick, type, className } = props;
 
   return (
-    <button className={styles.button} onClick={onClick} type={type}>
+    <button className={cx(styles.button, className)} onClick={onClick} type={type}>
       {children}
     </button>
   );

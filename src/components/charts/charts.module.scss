@@ -6,7 +6,9 @@
 }
 
 .section {
-  margin: vr.$spacingSize80 0;
+  margin: vr.$spacingSize80 0 0;
+  padding-bottom: vr.$spacingSize90;
+  page-break-after: always;
 
   &:nth-child(odd) {
     background-color: var(--colorSectionPrimary);

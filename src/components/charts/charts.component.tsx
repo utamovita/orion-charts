@@ -10,6 +10,9 @@ import styles from "./charts.module.scss";
 import { AverageCallTime } from "./segments/average-call-time/average-call-time.component";
 import { ShortCalls } from "./segments/short-calls/short-calls.component";
 import { Contractors } from "./segments/contractors/contractors.component";
+import { useEffect, useRef } from "react";
+import { usePdfDispatch } from "src/context/pdf.context";
+
 
 type ChartHeaderProps = {
   title: string;
@@ -75,15 +78,20 @@ const Section = ({ children }: SectionProps) => {
 
 const Charts = () => {
   const state = useDataState();
-
+  const ref = useRef(null);
   const { globalData } = state;
+  const pdfDispatch = usePdfDispatch();
+
+  useEffect(() => {
+    pdfDispatch({ type: "UPDATE_REF", payload: { ref } });
+  }, [ref, pdfDispatch]);
 
   if (globalData.length === 0) {
     return null;
   }
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} ref={ref}>
       <FilterButton />
       <Section>
         <TotalCalls />
