@@ -127,6 +127,37 @@ function reducer(state: State, action: Action): State {
     }
 
     case "UPDATE_DATE_RANGE": {
+      const newCurrentDate = new Date(state.globalMinDate);
+      const { view } = state.segmentData[action.segment];
+
+      if (view === "weekly") {
+        const day = newCurrentDate.getDay();
+
+        // set to monday before current date
+        switch (day) {
+          case 0: // sunday
+            newCurrentDate.setDate(newCurrentDate.getDate() - 6);
+            break;
+          case 1: // monday
+            break;
+          case 2: // tuesday
+            newCurrentDate.setDate(newCurrentDate.getDate() - 1);
+            break;
+          case 3: // wednesday
+            newCurrentDate.setDate(newCurrentDate.getDate() - 2);
+            break;
+          case 4: // thursday
+            newCurrentDate.setDate(newCurrentDate.getDate() - 3);
+            break;
+          case 5: // friday
+            newCurrentDate.setDate(newCurrentDate.getDate() - 4);
+            break;
+          case 6: // saturday
+            newCurrentDate.setDate(newCurrentDate.getDate() - 5);
+            break;
+        }
+      }
+
       return {
         ...state,
         segmentData: {
@@ -136,7 +167,7 @@ function reducer(state: State, action: Action): State {
             dateFrom: action.dateFrom,
             dateTo: action.dateTo,
             mainChart: {
-              currentDate: action.dateFrom,
+              currentDate: newCurrentDate,
             },
           },
         },

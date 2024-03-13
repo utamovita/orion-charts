@@ -9,7 +9,7 @@ function useShortCalls() {
   const currentDate = mainChart.currentDate;
   const data = getFilteredData(dateFrom, dateTo);
 
-  const maxSeconds = 10;
+  const maxSeconds = 5;
 
   const getShortCallsMainChartDatasets = () => {
     if (view === "daily") {

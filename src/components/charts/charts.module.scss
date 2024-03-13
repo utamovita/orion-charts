@@ -7,7 +7,7 @@
 
 .section {
   margin: vr.$spacingSize80 0 0;
-  padding-bottom: vr.$spacingSize90;
+  padding-bottom: vr.$spacingSize80;
   page-break-after: always;
 
   &:nth-child(odd) {
@@ -20,15 +20,21 @@
 }
 
 .sectionTitle {
-  font-size: 42px;
+  font-size: 32px;
   text-align: center;
+  margin-bottom: vr.$spacingSize30;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: vr.$spacingSize60;
+  margin-bottom: vr.$spacingSize50;
+
+  &.printView {
+    display: none;
+  }
 }
+
 
 .actionButton {
   font-weight: bold;

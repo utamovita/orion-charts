@@ -11,8 +11,8 @@ import { AverageCallTime } from "./segments/average-call-time/average-call-time.
 import { ShortCalls } from "./segments/short-calls/short-calls.component";
 import { Contractors } from "./segments/contractors/contractors.component";
 import { useEffect, useRef } from "react";
-import { usePdfDispatch } from "src/context/pdf.context";
-
+import { usePdfDispatch, usePdfState } from "src/context/pdf.context";
+import cx from "classnames";
 
 type ChartHeaderProps = {
   title: string;
@@ -25,12 +25,13 @@ type ChartHeaderProps = {
 function ChartHeader(props: ChartHeaderProps) {
   const { showDataRangePopup, changeViewPopup } = useChart();
   const { title, segment, segmentDateFrom, segmentDateTo, view } = props;
+  const { isPrintView } = usePdfState();
 
   return (
     <>
       <h3 className={styles.sectionTitle}>{title}</h3>
 
-      <div className={styles.header}>
+      <div className={cx(styles.header, { [styles.printView]: isPrintView })}>
         <div>
           <button
             className={styles.actionButton}

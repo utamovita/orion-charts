@@ -11,14 +11,14 @@ const ShortCalls = () => {
   return (
     <>
       <ChartHeader
-        title="Ilość połączeń < 10s"
+        title="Ilość połączeń < 5s"
         segment="shortCalls"
         segmentDateFrom={dateFrom}
         segmentDateTo={dateTo}
         view={view}
       />
       <MainChart segment="shortCalls" />
-      <Summary segment="shortCalls" title="Łączna ilość połączeń < 10s" />
+      <Summary segment="shortCalls" title="Łączna ilość połączeń < 5s" />
 
     </>
   );

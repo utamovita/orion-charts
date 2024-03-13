@@ -2,8 +2,8 @@ import { useFilters } from "src/components/filters/use-filters.hook";
 import { useDataState } from "src/context/data.context";
 import { getDayData, getMonthData, getWeekData, getYearData } from "src/helpers/data";
 import { useChart } from "src/hooks/use-chart.hook";
+import { RecordType } from "src/types/DataTypes.type";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const countryGroups = [
   "Germany",
   "Poland",
@@ -26,7 +26,12 @@ const countryGroups = [
   "Norway",
   "Finland",
   "Montenegro",
-  "Portugal"
+  "Portugal",
+  "Bosnia and Herzegovina",
+  "Bulgaria",
+  "Slovenia",
+  "Switzerland",
+  "Serbia"
 ]
 
 const contractorsChartOptions = {
@@ -49,93 +54,63 @@ function useContractors() {
   const currentDate = mainChart.currentDate;
   const data = getFilteredData(dateFrom, dateTo);
 
-  const getContractorsData = () => {
+  function generateContractors(data: RecordType[]) {
     const contractorsData: ContractorsData = [];
 
+    data.map((item) => {
+      item.data.map((item) => {
+        // group by country
+        let countryName = item.country;
+
+        countryGroups.map((country) => {
+          if (item.country.includes(country)) {
+            countryName = country;
+          }
+        });
+
+        if (contractorsData.some(obj => Object.keys(obj).includes(countryName))) {
+          contractorsData.map(obj => {
+            if (Object.keys(obj).includes(countryName)) {
+              obj[countryName] += 1
+            }
+          })
+        }
+
+        else {
+          contractorsData.push({ [countryName]: 1 })
+        }
+      })
+    });
+
+    return contractorsData;
+  }
+
+  const getContractorsData = () => {
     if (view === "daily") {
       const currentDayData = getDayData(currentDate, data);
 
-      currentDayData.map((item) => {
-        item.data.map((item) => {
-          if (contractorsData.some(obj => Object.keys(obj).includes(item.country))) {
-            contractorsData.map(obj => {
-              if (Object.keys(obj).includes(item.country)) {
-                obj[item.country] += 1
-              }
-            })
-          }
-
-          else {
-            contractorsData.push({ [item.country]: 1 })
-          }
-        })
-      });
+      const contractorsData = generateContractors(currentDayData);
 
       return contractorsData;
     }
 
     if (view === "weekly") {
       const weekData = getWeekData(currentDate, data);
-
-      weekData.map((item) => {
-        item.data.map((item) => {
-          if (contractorsData.some(obj => Object.keys(obj).includes(item.country))) {
-            contractorsData.map(obj => {
-              if (Object.keys(obj).includes(item.country)) {
-                obj[item.country] += 1
-              }
-            })
-          }
-
-          else {
-            contractorsData.push({ [item.country]: 1 })
-          }
-        })
-      });
+      const contractorsData = generateContractors(weekData);
 
       return contractorsData;
     }
 
     if (view === "monthly") {
       const monthData = getMonthData(currentDate, data);
-
-      monthData.map((item) => {
-        item.data.map((item) => {
-          if (contractorsData.some(obj => Object.keys(obj).includes(item.country))) {
-            contractorsData.map(obj => {
-              if (Object.keys(obj).includes(item.country)) {
-                obj[item.country] += 1
-              }
-            })
-          }
-
-          else {
-            contractorsData.push({ [item.country]: 1 })
-          }
-        })
-      });
+      const contractorsData = generateContractors(monthData);
 
       return contractorsData;
     }
 
     if (view === "yearly") {
       const yearData = getYearData(currentDate, data);
-
-      yearData.map((item) => {
-        item.data.map((item) => {
-          if (contractorsData.some(obj => Object.keys(obj).includes(item.country))) {
-            contractorsData.map(obj => {
-              if (Object.keys(obj).includes(item.country)) {
-                obj[item.country] += 1
-              }
-            })
-          }
-
-          else {
-            contractorsData.push({ [item.country]: 1 })
-          }
-        })
-      });
+      const contractorsData = generateContractors(yearData);
 
       return contractorsData;
     }
@@ -143,7 +118,7 @@ function useContractors() {
     return []
   }
 
-  const contractorsData = getContractorsData()
+  const contractorsData = getContractorsData();
 
   contractorsData.sort((a, b) => {
     const valueA = Object.values(a)[0];
